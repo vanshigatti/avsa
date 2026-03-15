@@ -27,7 +27,7 @@ Our project is an AI-based platform that detects fake news in multiple Indian la
 ## PPT Presentation
 View the presentation here:
 
-[Add PPT Link Here]
+[View Project Presentation](https://www.canva.com/design/DAHDv8u_L7U/N9NNSR8VII2TGHBYm4Bp-g/edit?utm_content=DAHDv8u_L7U&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ## Demo Video
 Watch the demo video here:
