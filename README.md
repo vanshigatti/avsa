@@ -1,12 +1,13 @@
 # Team Name : Null Set{}
 
+## Track
+Open Innovation 
+
 # AI Platform for Detecting Fake News in Indian Languages
 
 ## Problem Statement
 Misinformation spreads rapidly in India through social media platforms such as WhatsApp, Facebook, and Telegram. Most existing fact-checking systems mainly focus on English content, leaving regional language news largely unchecked. This creates a major gap in detecting fake news for millions of users who consume content in Indian languages.
 
-## Track
-Open Track
 
 ## Relevant SDGs
 - **SDG 16 – Peace, Justice and Strong Institutions**  
