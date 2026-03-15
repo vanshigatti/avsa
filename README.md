@@ -15,7 +15,7 @@ Open Track
   Helping people access reliable and factual information.
 
 ## Project Overview
-Our project is an AI-based platform that detects fake news in multiple Indian languages. The system analyzes the input news text using NLP and AI reasoning techniques to determine whether the content is likely to be fake or real.
+Our project, Credible Chronicles, is an AI-based platform that detects fake news in multiple Indian languages. The system analyzes the input news text using NLP and AI reasoning techniques to determine whether the content is likely to be fake or real.
 
 ## Features
 - **Multilingual Fake News Detection** – Detects misinformation in multiple Indian languages.
