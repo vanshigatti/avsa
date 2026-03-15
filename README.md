@@ -1,3 +1,5 @@
+#Team Name : Null Set{}
+
 # AI Platform for Detecting Fake News in Indian Languages
 
 ## Problem Statement
