@@ -1,4 +1,4 @@
-#Team Name : Null Set{}
+# Team Name : Null Set{}
 
 # AI Platform for Detecting Fake News in Indian Languages
 
