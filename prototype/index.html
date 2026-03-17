@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TruthLens - Groq Prototype</title>
+  <title>Credible Chronicles</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 
@@ -79,8 +79,18 @@
     <ul id="groq-risks"></ul>
   </section>
 
+  <!-- PROPAGATION MAP — appears after analysis, spans full width -->
+  <section class="card propagation-card" id="propagation-section" style="display:none;">
+    <div id="propagation-map"></div>
+  </section>
+
 </main>
 
+<!-- 1. D3.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<!-- 2. Propagation graph (must be BEFORE app.js) -->
+<script src="./propagation/graph.js"></script>
+<!-- 3. Main app -->
 <script src="./app.js"></script>
 
 </body>
