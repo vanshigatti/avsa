@@ -1,4 +1,4 @@
-# TruthLens – Fake News Detection Prototype
+# Credible Chronicles – Fake News Detection Prototype
 
 TruthLens is an AI-powered prototype designed to detect potential misinformation in user-submitted claims. The system combines heuristic pattern detection with Groq-powered AI reasoning and fact-check verification to provide a credibility assessment in real time.
 
