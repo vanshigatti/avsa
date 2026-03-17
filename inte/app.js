@@ -60,7 +60,6 @@ function detectPatterns(text) {
   const lower = text.toLowerCase();
   const p = [];
 
-  // Only flag truly manipulative sensational terms, not news language
   const MANIPULATIVE_TERMS = [
     "forward करें","must share","share now","before it is deleted",
     "they don't want you to know","government hiding","miracle cure",
@@ -74,7 +73,6 @@ function detectPatterns(text) {
     p.push("Promotional/scam language");
   if (/https?:\/\//i.test(text)) p.push("External links present");
 
-  // Only flag missing source if it looks like a factual claim (not a news headline)
   const looksLikeHeadline = /:\s|govt|government|police|minister|official|deploy|supply|crisis/i.test(text);
   if (!looksLikeHeadline && !/\b(source|report|official|study|according)\b/i.test(text))
     p.push("No clear source cited");
@@ -83,7 +81,6 @@ function detectPatterns(text) {
 }
 
 function scoreFromHeuristics(patterns, length) {
-  // Start at a neutral 30 — not already biased toward fake
   let score = 30;
   score += patterns.length * 8;
   if (length < 30) score += 5;
@@ -92,7 +89,6 @@ function scoreFromHeuristics(patterns, length) {
 }
 
 function calibrateScore(score) {
-  // Gentle curve — don't push borderline scores to extremes
   return Math.round(Math.pow(score / 100, 1.05) * 100);
 }
 
@@ -104,16 +100,13 @@ function renderDial(fakeScore, _rawLabel) {
   const lbl   = document.querySelector("#dial-label");
   if (!dial) return;
 
-  // Credibility = inverse of fake score
   const credibility = 100 - fakeScore;
-
-  // Derive a clean human-readable label from the score — never show raw Groq label
   let label, color;
-  if (credibility >= 80) { label = "Highly Credible";     color = "var(--ok)";     }
-  else if (credibility >= 60) { label = "Likely Credible";color = "var(--ok)";     }
-  else if (credibility >= 45) { label = "Needs Verification"; color = "var(--warn)"; }
-  else if (credibility >= 25) { label = "Likely Misleading";  color = "var(--warn)"; }
-  else                        { label = "Likely Fake";         color = "var(--danger)"; }
+  if (credibility >= 80)      { label = "Highly Credible";      color = "var(--ok)";     }
+  else if (credibility >= 60) { label = "Likely Credible";      color = "var(--ok)";     }
+  else if (credibility >= 45) { label = "Needs Verification";   color = "var(--warn)";   }
+  else if (credibility >= 25) { label = "Likely Misleading";    color = "var(--warn)";   }
+  else                        { label = "Likely Fake";          color = "var(--danger)"; }
 
   const deg = Math.round((credibility / 100) * 360);
   dial.style.background = `conic-gradient(${color} 0deg ${deg}deg, #3a1028 ${deg}deg 360deg)`;
@@ -221,7 +214,6 @@ function renderFakeScore(score, explanation, components) {
 
 // ── Claim Autopsy ─────────────────────────────────────────────────────
 
-// Map annotation type → CSS class + display label
 const SEG_META = {
   fabricated:         { cls: "seg-fabricated",         label: "Fabricated",         icon: "🔴" },
   fear_trigger:       { cls: "seg-fear_trigger",        label: "Fear Trigger",        icon: "😨" },
@@ -232,14 +224,12 @@ const SEG_META = {
   neutral:            { cls: "seg-neutral",             label: "Neutral",             icon: "⚫" },
 };
 
-// Verdict config — driven by fakeScore passed in, NOT by AI label alone
 function getVerdictConfig(verdict, fakeScore) {
-  // Override AI verdict if score clearly contradicts it
-  if (fakeScore <= 25)  verdict = "true";
-  if (fakeScore >= 70)  verdict = "fake";
+  if (fakeScore <= 25) verdict = "true";
+  if (fakeScore >= 70) verdict = "fake";
 
   if (verdict === "true") return {
-    cls: "verdict-unverified", // reuse green-tinted style
+    cls: "verdict-unverified",
     icon: "✅", label: "Likely Credible",
     color: "var(--ok)",
     bgStyle: "background:rgba(45,212,191,0.10);border:1px solid rgba(45,212,191,0.3);",
@@ -269,14 +259,12 @@ function renderAutopsy(data, originalText, fakeScore) {
   const verdict = data.verdict || "uncertain";
   const cfg = getVerdictConfig(verdict, fakeScore || 50);
 
-  // Status badge in card title
   const statusEl = document.getElementById("autopsy-status");
   if (statusEl) {
     statusEl.textContent = cfg.statusText;
     statusEl.style.cssText = cfg.statusStyle + "margin-left:auto;font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;letter-spacing:.04em;";
   }
 
-  // Verdict banner — using proper CSS class + structured HTML
   const verdictEl = document.getElementById("autopsy-verdict");
   if (verdictEl) {
     verdictEl.className = `autopsy-verdict ${cfg.cls}`;
@@ -289,7 +277,6 @@ function renderAutopsy(data, originalText, fakeScore) {
       </div>`;
   }
 
-  // Annotated text — use proper .seg spans with .seg-tooltip
   const annotatedEl = document.getElementById("autopsy-annotated");
   if (annotatedEl) {
     let html = originalText
@@ -298,7 +285,6 @@ function renderAutopsy(data, originalText, fakeScore) {
       .replace(/>/g, "&gt;");
 
     if (data.annotations && data.annotations.length) {
-      // Sort longest phrase first to avoid partial overlaps
       const sorted = [...data.annotations].sort((a, b) => (b.phrase || "").length - (a.phrase || "").length);
       sorted.forEach((ann) => {
         if (!ann.phrase) return;
@@ -311,11 +297,9 @@ function renderAutopsy(data, originalText, fakeScore) {
     annotatedEl.innerHTML = html;
   }
 
-  // Techniques — use .technique-card with severity
   const techEl = document.getElementById("autopsy-techniques");
   if (techEl) {
     if (data.techniques && data.techniques.length) {
-      // Assign severity based on position (first = most severe)
       const sevMap = ["sev-high", "sev-high", "sev-medium", "sev-medium", "sev-low"];
       techEl.innerHTML = data.techniques.map((t, i) => {
         const sev     = sevMap[i] || "sev-low";
@@ -336,11 +320,9 @@ function renderAutopsy(data, originalText, fakeScore) {
     }
   }
 
-  // Forensic summary
   const sumEl = document.getElementById("autopsy-summary");
   if (sumEl) sumEl.textContent = data.forensic_summary || "";
 
-  // Who benefits
   const benEl = document.getElementById("autopsy-benefits");
   if (benEl) benEl.textContent = data.who_benefits || "Unknown";
 }
@@ -498,6 +480,94 @@ function renderEvidence(reviews) {
   });
 }
 
+// ── Trending Claims ───────────────────────────────────────────────────
+
+async function loadTrending() {
+  const section = document.getElementById("trending-section");
+  if (!section) return;
+
+  try {
+    const res  = await fetch("/api/trending");
+    const data = await res.json();
+
+    if (!data || data.total === 0) {
+      section.innerHTML = `<p style="color:var(--muted);font-size:13px;text-align:center;padding:18px 0;">
+        No claims analyzed yet — be the first!
+      </p>`;
+      return;
+    }
+
+    const verdictColor = v =>
+      v === "fake" ? "#e84c7f" : v === "real" ? "#2f8f6b" : "#f7a07e";
+
+    const statsHtml = `
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;">
+        <div style="background:rgba(232,76,127,0.1);border:1px solid rgba(232,76,127,0.25);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:#e84c7f;">${data.fakeRatio}%</div>
+          <div style="font-size:11px;color:var(--muted);">Likely Fake</div>
+        </div>
+        <div style="background:rgba(47,143,107,0.1);border:1px solid rgba(47,143,107,0.25);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:#2f8f6b;">${data.realRatio}%</div>
+          <div style="font-size:11px;color:var(--muted);">Likely Real</div>
+        </div>
+        <div style="background:rgba(247,160,126,0.1);border:1px solid rgba(247,160,126,0.25);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:#f7a07e;">${data.uncertainRatio}%</div>
+          <div style="font-size:11px;color:var(--muted);">Uncertain</div>
+        </div>
+        <div style="background:rgba(196,77,255,0.08);border:1px solid rgba(196,77,255,0.2);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:var(--accent);">${data.total}</div>
+          <div style="font-size:11px;color:var(--muted);">Total Analyzed</div>
+        </div>
+      </div>`;
+
+    const claimsHtml = data.claims.map(c => {
+      const color    = verdictColor(c.verdict);
+      const ago      = timeAgo(c.timestamp);
+      const barW     = Math.max(4, c.score);
+      const barColor = c.score >= 70 ? "#e84c7f" : c.score >= 40 ? "#f7a07e" : "#2f8f6b";
+      const safeText = c.claim.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+      return `
+        <div
+          onclick="switchTab('text'); const el=document.getElementById('claim'); if(el){el.value=${JSON.stringify(c.claim)};el.focus();}"
+          style="cursor:pointer;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.07);
+                 background:rgba(255,255,255,0.03);margin-bottom:8px;transition:all .2s;"
+          onmouseover="this.style.background='rgba(196,77,255,0.08)';this.style.borderColor='rgba(196,77,255,0.25)'"
+          onmouseout="this.style.background='rgba(255,255,255,0.03)';this.style.borderColor='rgba(255,255,255,0.07)'"
+        >
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;
+              background:${color}22;color:${color};border:1px solid ${color}44;text-transform:uppercase;
+              letter-spacing:.04em;">${c.verdict}</span>
+            <span style="font-size:10px;color:var(--muted);margin-left:auto;">${ago}</span>
+          </div>
+          <div style="font-size:13px;color:var(--ink);line-height:1.4;margin-bottom:6px;">
+            ${safeText.length > 90 ? safeText.slice(0,90) + "…" : safeText}
+          </div>
+          <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;">
+            <div style="height:100%;width:${barW}%;background:${barColor};border-radius:999px;"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px;">Fake probability: ${c.score}%</div>
+        </div>`;
+    }).join("");
+
+    section.innerHTML = statsHtml + claimsHtml;
+
+  } catch (e) {
+    console.warn("Trending load failed:", e.message);
+    section.innerHTML = `<p style="color:var(--muted);font-size:13px;padding:8px 0;">Could not load trending data.</p>`;
+  }
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1)  return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24)  return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
 // ── API calls ─────────────────────────────────────────────────────────
 
 async function fetchGroq(claim) {
@@ -579,11 +649,10 @@ async function analyzeClaim() {
   const status  = document.querySelector("#status");
   const claimEl = document.querySelector("#claim");
 
-  // Determine active tab
   const imageTabActive = document.getElementById("tab-image")?.classList.contains("active");
   let text = "";
 
-  // ── IMAGE MODE: extract text from screenshot first ──
+  // ── IMAGE MODE ──
   if (imageTabActive && _uploadedImageBase64) {
     if (status) status.textContent = "Detecting language and extracting text…";
     document.getElementById("autopsy-idle")?.classList.add("hidden");
@@ -605,8 +674,6 @@ async function analyzeClaim() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
-      // text = English version for analysis
-      // originalText = native script for display
       text = (data.text || data.translatedText || data.originalText || "").trim();
       const originalText     = (data.originalText || text).trim();
       const detectedLanguage = data.detectedLanguage || "Unknown";
@@ -619,12 +686,10 @@ async function analyzeClaim() {
         return;
       }
 
-      // Show extracted content under image preview
       const extractWrap = document.getElementById("extracted-claim-wrap");
       const extractText = document.getElementById("extracted-claim-text");
       if (extractWrap) extractWrap.classList.remove("hidden");
       if (extractText) {
-        // Language badge + original text + translated text if different
         extractText.innerHTML = `
           <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <span style="font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;
@@ -643,7 +708,6 @@ async function analyzeClaim() {
         `;
       }
 
-      // Update image source tag with language
       const imgSourceTag = document.getElementById("img-source-tag");
       if (imgSourceTag) imgSourceTag.textContent = detectedLanguage !== "Unknown" ? `📷 ${detectedLanguage}` : "📷 Image";
 
@@ -697,7 +761,7 @@ async function analyzeClaim() {
     finalScore = typeof groq.score === "number" ? calibrateScore(groq.score) : heuristic;
 
     const lowerLabel = (groq.label || "").toLowerCase();
-    if (lowerLabel.includes("false") || lowerLabel.includes("fake"))              finalVerdict = "fake";
+    if (lowerLabel.includes("false") || lowerLabel.includes("fake"))                          finalVerdict = "fake";
     else if (lowerLabel.includes("true") || lowerLabel.includes("real") || lowerLabel.includes("credible")) finalVerdict = "real";
     else finalVerdict = "uncertain";
 
@@ -721,8 +785,10 @@ async function analyzeClaim() {
     .then((data) => renderAutopsy(data, text, finalScore))
     .catch(() => renderAutopsy({
       verdict: finalVerdict,
-      verdict_statement: finalVerdict === "fake" ? "This claim shows strong misinformation signals."
-        : finalVerdict === "real" ? "This claim appears to be credible news."
+      verdict_statement: finalVerdict === "fake"
+        ? "This claim shows strong misinformation signals."
+        : finalVerdict === "real"
+        ? "This claim appears to be credible news."
         : "This claim could not be fully verified.",
       annotations: [],
       techniques: finalVerdict === "fake" ? patterns : [],
@@ -746,20 +812,25 @@ async function analyzeClaim() {
       renderEvidence(consensus.reviews);
       showPropagation(text, finalScore, finalVerdict, consensus.reviews);
       if (status) status.textContent = "Verification complete ✓";
+      // Refresh trending after analysis completes
+      setTimeout(loadTrending, 800);
     })
     .catch((err) => {
       console.error("Fact-check error:", err);
       showPropagation(text, finalScore, finalVerdict, []);
       if (status) status.textContent = "Fact-check unavailable";
+      setTimeout(loadTrending, 800);
     });
 }
 
 // ── Init ──────────────────────────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Image input
   const imageInput = document.getElementById("image-input");
   if (imageInput) imageInput.addEventListener("change", (e) => handleImageFile(e.target.files[0]));
 
+  // Drop zone
   const dropZone = document.getElementById("drop-zone");
   if (dropZone) {
     dropZone.addEventListener("dragover",  (e) => { e.preventDefault(); dropZone.classList.add("drag-over"); });
@@ -771,10 +842,26 @@ document.addEventListener("DOMContentLoaded", () => {
     dropZone.addEventListener("click", () => document.getElementById("image-input").click());
   }
 
+  // Analyze button
+  const analyzeBtn = document.querySelector("#analyze");
+  if (analyzeBtn) analyzeBtn.addEventListener("click", analyzeClaim);
+
+  // ── FIX: read sessionStorage pending claim from fake-news.html ──
+  const pendingClaim = sessionStorage.getItem("pendingClaim");
+  if (pendingClaim) {
+    sessionStorage.removeItem("pendingClaim");
+    const claimEl = document.getElementById("claim");
+    if (claimEl) {
+      switchTab("text");
+      claimEl.value = pendingClaim;
+      setTimeout(() => analyzeClaim(), 400);
+    }
+  }
+
+  // Load trending on page load
+  loadTrending();
+
   if (typeof PropagationMap === "undefined") {
     console.error("graph.js not loaded — check script order in index.html");
   }
-
-  const analyzeBtn = document.querySelector("#analyze");
-  if (analyzeBtn) analyzeBtn.addEventListener("click", analyzeClaim);
 });

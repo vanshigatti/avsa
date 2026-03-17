@@ -194,6 +194,7 @@ body {
 .card:nth-child(10) { animation-delay:.38s }
 .card:nth-child(11) { animation-delay:.42s }
 .card:nth-child(12) { animation-delay:.46s }
+.card:nth-child(13) { animation-delay:.50s }
 
 /* ─── grid layout ───────────────────────────────────────────────── */
 .autopsy-card      { grid-column: span 12; }
@@ -208,7 +209,8 @@ body {
 .radar-card        { grid-column: span 4; }
 .patterns-card     { grid-column: span 4; }
 .phrases-card      { grid-column: span 4; }
-.groq-risks-card   { grid-column: span 4; }
+.groq-risks-card   { grid-column: span 8; }
+.trending-card     { grid-column: span 4; }
 
 /* ─── card titles ───────────────────────────────────────────────── */
 .card-title {
@@ -1013,7 +1015,6 @@ li { margin-bottom: 8px; line-height: 1.5; font-size: 14px; }
 }
 .fake-pill:hover .pill-hover { display: block; }
 
-/* Prevent popup going off-screen on first/last items */
 .fake-pill:first-child .pill-hover  { left: 0;   transform: none; }
 .fake-pill:last-child .pill-hover   { left: auto; right: 0; transform: none; }
 
@@ -1191,6 +1192,8 @@ li { margin-bottom: 8px; line-height: 1.5; font-size: 14px; }
   .prop-meta-grid              { grid-template-columns: repeat(2,1fr); }
   .aw-divider                  { display: none; }
   .aw-stat                     { min-width: 120px; }
+  .groq-risks-card             { grid-column: span 12; }
+  .trending-card               { grid-column: span 12; }
 }
 
 @media (max-width: 720px) {
@@ -1200,6 +1203,7 @@ li { margin-bottom: 8px; line-height: 1.5; font-size: 14px; }
   .groq-card, .truth-card, .propagation-card,
   .consensus-card, .evidence-card, .radar-card,
   .patterns-card, .phrases-card, .groq-risks-card,
+  .trending-card,
   .popular-fakes-card, .awareness-card { grid-column: span 1; }
   .prop-meta-grid      { grid-template-columns: repeat(2,1fr); }
   .truth-sources-grid  { grid-template-columns: 1fr; }

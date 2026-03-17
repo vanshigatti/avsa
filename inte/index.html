@@ -228,7 +228,7 @@
     <div class="mini-title">Spread Path</div>
     <div id="prop-spread-path" class="spread-path"></div>
 
-    <!-- ↓ PropagationMap mounts here ↓ -->
+    <!-- PropagationMap mounts here -->
     <div id="propagation-map"></div>
 
     <div class="mini-title">Affected Regions</div>
@@ -284,6 +284,25 @@
   <section class="card groq-risks-card">
     <div class="card-title">AI Risk Factors</div>
     <ul id="groq-risks"></ul>
+  </section>
+
+  <!-- ── Trending Claims ── -->
+  <section class="card trending-card">
+    <div class="card-title">
+      <span class="card-icon">🔥</span> Trending Claims
+      <button
+        onclick="loadTrending()"
+        style="margin-left:auto;background:rgba(196,77,255,0.12);border:1px solid rgba(196,77,255,0.25);
+               border-radius:999px;padding:3px 12px;font-size:11px;font-weight:700;color:var(--accent);
+               cursor:pointer;font-family:'Space Grotesk',sans-serif;"
+      >↻ Refresh</button>
+    </div>
+    <p class="muted" style="font-size:12px;margin-bottom:12px;">
+      Claims analyzed this session — click any to re-analyze.
+    </p>
+    <div id="trending-section">
+      <p style="color:var(--muted);font-size:13px;text-align:center;padding:18px 0;">Loading…</p>
+    </div>
   </section>
 
 </main>
