@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Credible Chronicles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="nav-logo">🔎</span>
+    <span class="nav-title">Credible Chronicles</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link active">Home</a>
+    <a href="fake-news.html" class="nav-link">🏴 Popular Fake News</a>
+    <a href="awareness.html" class="nav-link">🛡 Awareness Guide</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">AI-Powered Verification</div>
+    <h1>Credible Chronicles</h1>
+    <p class="hero-sub">Detect misinformation, trace how it spreads, and find the truth.</p>
+  </div>
+</header>
+
+<main class="grid">
+
+  <!-- ── NEW: Claim Autopsy ── -->
+  <section class="card autopsy-card">
+    <div class="card-title">
+      <span class="card-icon">🔬</span> Claim Autopsy
+      <span class="autopsy-status" id="autopsy-status"></span>
+    </div>
+
+    <div id="autopsy-idle" class="autopsy-idle">
+      <div class="autopsy-idle-icon">⚕</div>
+      <p>Submit a claim to begin the forensic dissection.</p>
+    </div>
+
+    <div id="autopsy-running" class="autopsy-running hidden">
+      <div class="autopsy-scanner">
+        <div class="scanner-line"></div>
+        <p class="scanner-text">Dissecting claim...</p>
+      </div>
+    </div>
+
+    <div id="autopsy-result" class="hidden">
+
+      <!-- Verdict banner -->
+      <div id="autopsy-verdict" class="autopsy-verdict"></div>
+
+      <!-- Annotated text -->
+      <div class="mini-title">Forensic Annotation</div>
+      <div id="autopsy-annotated" class="autopsy-annotated"></div>
+
+      <!-- Legend -->
+      <div class="autopsy-legend">
+        <span class="legend-item"><span class="dot dot-fabricated"></span>Fabricated</span>
+        <span class="legend-item"><span class="dot dot-fear_trigger"></span>Fear trigger</span>
+        <span class="legend-item"><span class="dot dot-misleading"></span>Misleading</span>
+        <span class="legend-item"><span class="dot dot-conspiracy_framing"></span>Conspiracy</span>
+        <span class="legend-item"><span class="dot dot-emotional_bait"></span>Emotional bait</span>
+        <span class="legend-item"><span class="dot dot-neutral"></span>Neutral</span>
+      </div>
+
+      <!-- Manipulation techniques -->
+      <div class="mini-title">Manipulation Techniques Detected</div>
+      <div id="autopsy-techniques" class="autopsy-techniques"></div>
+
+      <!-- Summary + who benefits -->
+      <div class="autopsy-bottom">
+        <div class="autopsy-summary-box">
+          <div class="mini-title">Forensic Summary</div>
+          <p id="autopsy-summary" class="autopsy-summary-text"></p>
+        </div>
+        <div class="autopsy-benefits-box">
+          <div class="mini-title">Who Benefits?</div>
+          <p id="autopsy-benefits" class="muted"></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Input ── -->
+  <section class="card input-card">
+    <h2>Check a Claim</h2>
+
+    <!-- Tab switcher -->
+    <div class="input-tabs">
+      <button class="tab-btn active" id="tab-text" onclick="switchTab('text')">
+        ✏️ Type / Paste
+      </button>
+      <button class="tab-btn" id="tab-image" onclick="switchTab('image')">
+        📷 Screenshot
+      </button>
+    </div>
+
+    <!-- Text input -->
+    <div id="panel-text">
+      <textarea id="claim" placeholder="Paste any claim, headline, or forwarded message here…"></textarea>
+    </div>
+
+    <!-- Image upload panel -->
+    <div id="panel-image" class="hidden">
+      <div id="drop-zone" class="drop-zone">
+        <input type="file" id="image-input" accept="image/*" style="display:none">
+        <div class="drop-icon">📸</div>
+        <p class="drop-text">Drop a screenshot here</p>
+        <p class="drop-sub">or <span class="drop-link" onclick="document.getElementById('image-input').click()">browse to upload</span></p>
+        <p class="drop-formats">JPG, PNG, WEBP supported</p>
+      </div>
+
+      <!-- Preview -->
+      <div id="image-preview-wrap" class="hidden">
+        <img id="image-preview" class="img-preview" alt="Screenshot preview">
+        <div class="img-actions">
+          <span id="img-source-tag" class="source-tag"></span>
+          <button class="img-clear-btn" onclick="clearImage()">✕ Remove</button>
+        </div>
+        <div id="extracted-claim-wrap" class="hidden">
+          <div class="mini-title">Extracted Claim</div>
+          <div id="extracted-claim-text" class="extracted-claim"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="analyze">
+      <span class="btn-icon">⟳</span> Analyze
+    </button>
+    <p id="status" class="status"></p>
+  </section>
+
+  <!-- ── Credibility Dial (existing) ── -->
+  <section class="card dial-card">
+    <div class="card-title">Credibility Index</div>
+    <div class="dial-wrap">
+      <div class="dial" id="dial">
+        <div class="dial-inner">
+          <div id="dial-value">--%</div>
+          <div class="dial-sub" id="dial-label">Needs verification</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEW: Fake Probability Score ── -->
+  <section class="card fake-score-card">
+    <div class="card-title">Fake Probability Score</div>
+    <div class="fake-score-layout">
+      <div id="fake-score-value" class="fake-score-number">--%</div>
+      <div class="fake-score-track">
+        <div class="fake-score-bar">
+          <div id="fake-score-bar" class="fake-score-fill"></div>
+        </div>
+        <p id="fake-score-explanation" class="muted score-expl"></p>
+      </div>
+    </div>
+    <div class="mini-title">Score Breakdown</div>
+    <div id="fake-score-components" class="comp-grid"></div>
+  </section>
+
+  <!-- ── Groq Insight (existing) ── -->
+  <section class="card groq-card">
+    <div class="card-title">AI Insight</div>
+    <p id="groq-summary" class="muted"></p>
+    <div class="mini-title">Recommendation</div>
+    <p id="groq-recommendation" class="muted"></p>
+  </section>
+
+  <!-- ── NEW: Truth Engine ── -->
+  <section class="card truth-card">
+    <div class="card-title">
+      <span class="card-icon">✓</span> What Is the Truth?
+    </div>
+    <div class="truth-corrected" id="truth-corrected">Run analysis to see verified alternative…</div>
+    <p id="truth-explanation" class="muted truth-expl"></p>
+
+    <div class="mini-title">Key Facts</div>
+    <ul id="truth-facts"></ul>
+
+    <div class="truth-sources-grid">
+      <div>
+        <div class="mini-title">Verified News</div>
+        <ul id="truth-news" class="link-list"></ul>
+      </div>
+      <div>
+        <div class="mini-title">Fact-Check Articles</div>
+        <ul id="truth-factchecks" class="link-list"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEW: Propagation Tracker ── -->
+  <section class="card propagation-card">
+    <div class="card-title">
+      <span class="card-icon">⤴</span> Propagation Tracker
+    </div>
+
+    <div class="prop-meta-grid">
+      <div class="prop-meta-item">
+        <span class="prop-label">Origin</span>
+        <span id="prop-origin" class="prop-value">—</span>
+      </div>
+      <div class="prop-meta-item">
+        <span class="prop-label">Peak platform</span>
+        <span id="prop-peak" class="prop-value">—</span>
+      </div>
+      <div class="prop-meta-item">
+        <span class="prop-label">Spread speed</span>
+        <span id="prop-speed" class="prop-value">—</span>
+      </div>
+      <div class="prop-meta-item">
+        <span class="prop-label">Est. reach</span>
+        <span id="prop-reach" class="prop-value">—</span>
+      </div>
+    </div>
+
+    <div class="mini-title">Spread Path</div>
+    <div id="prop-spread-path" class="spread-path"></div>
+
+    <div class="mini-title">Network Graph</div>
+    <div id="prop-graph" class="prop-graph-container"></div>
+
+    <div class="mini-title">Affected Regions</div>
+    <ul id="prop-regions" class="regions-list"></ul>
+
+    <div class="mini-title">News Coverage</div>
+    <ul id="prop-news-articles" class="link-list news-list"></ul>
+
+    <div class="mini-title">Top Sources Covering This Claim</div>
+    <ul id="prop-top-sources" class="sources-pill-list"></ul>
+  </section>
+
+  <!-- ── Fact-Check Consensus (existing) ── -->
+  <section class="card consensus-card">
+    <div class="card-title">Fact-Check Consensus</div>
+    <div class="consensus-bar">
+      <div id="consensus-true"></div>
+      <div id="consensus-false"></div>
+      <div id="consensus-mixed"></div>
+    </div>
+    <div class="muted" id="consensus-label">Consensus: Checking…</div>
+  </section>
+
+  <!-- ── Evidence (existing) ── -->
+  <section class="card evidence-card">
+    <div class="card-title">Fact-Check Evidence</div>
+    <ul id="evidence-list"></ul>
+  </section>
+
+  <!-- ── Virality Radar (existing) ── -->
+  <section class="card radar-card">
+    <div class="card-title">Virality Radar</div>
+    <div class="meter">
+      <div class="meter-bar" id="virality-score"></div>
+    </div>
+    <div class="muted" id="virality-label"></div>
+    <ul id="virality-signals"></ul>
+  </section>
+
+  <!-- ── Risk Signals (existing) ── -->
+  <section class="card patterns-card">
+    <div class="card-title">Risk Signals</div>
+    <ul id="pattern-list"></ul>
+  </section>
+
+  <!-- ── Suspicious Phrases (existing) ── -->
+  <section class="card phrases-card">
+    <div class="card-title">Suspicious Phrases</div>
+    <ul id="groq-phrases"></ul>
+  </section>
+
+  <!-- ── Groq Risk Factors (existing) ── -->
+  <section class="card groq-risks-card">
+    <div class="card-title">AI Risk Factors</div>
+    <ul id="groq-risks"></ul>
+  </section>
+
+</main>
+
+<script src="./app.js"></script>
+</body>
+</html>

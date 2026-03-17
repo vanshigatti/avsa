@@ -1,0 +1,25 @@
+{
+  "name": "prototype",
+  "version": "1.0.0",
+  "description": "A fast, judge-ready prototype that combines instant risk signals with Groq-powered reasoning.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanshigatti/prototype.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vanshigatti/prototype/issues"
+  },
+  "homepage": "https://github.com/vanshigatti/prototype#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1"
+  }
+}

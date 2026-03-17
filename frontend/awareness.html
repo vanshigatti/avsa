@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Misinformation Awareness Guide — Credible Chronicles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    .aw-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+    .aw-stat-card{background:rgba(196,77,255,0.08);border:1px solid rgba(196,77,255,0.2);border-radius:14px;padding:20px;text-align:center}
+    .aw-stat-num{font-family:'DM Serif Display',serif;font-size:36px;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:6px}
+    .aw-stat-label{font-size:12px;color:var(--muted);line-height:1.5}
+
+    .aw-section{margin-bottom:48px}
+    .aw-section-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink);margin-bottom:8px}
+    .aw-section-intro{font-size:14px;color:var(--muted);line-height:1.7;max-width:780px;margin-bottom:22px}
+
+    .aw-tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+    .aw-tip-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;transition:all .25s;display:flex;flex-direction:column;gap:10px}
+    .aw-tip-card:hover{border-color:rgba(45,212,191,0.35);background:rgba(45,212,191,0.05);transform:translateY(-2px)}
+    .aw-tip-header{display:flex;align-items:center;gap:12px}
+    .aw-tip-icon{font-size:28px;line-height:1;flex-shrink:0}
+    .aw-tip-name{font-size:16px;font-weight:700;color:var(--ink)}
+    .aw-tip-body{font-size:13px;color:var(--muted);line-height:1.7}
+    .aw-tip-example{background:rgba(45,212,191,0.07);border-left:3px solid #2DD4BF;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#2DD4BF;line-height:1.5}
+    .aw-tip-example strong{display:block;margin-bottom:3px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+
+    .aw-checklist{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;margin-bottom:24px}
+    .aw-checklist-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:14px}
+    .aw-check-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .aw-check-item:last-child{border-bottom:none}
+    .aw-check-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+    .aw-check-text{font-size:13px;color:var(--muted);line-height:1.6}
+    .aw-check-text strong{color:var(--ink)}
+
+    .aw-types-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+    .aw-type-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px}
+    .aw-type-tag{font-size:10px;font-weight:700;letter-spacing:.07em;padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:10px}
+    .aw-type-tag.mis{background:rgba(255,159,69,0.15);color:#FF9F45;border:1px solid rgba(255,159,69,0.3)}
+    .aw-type-tag.dis{background:rgba(255,77,109,0.15);color:#FF4D6D;border:1px solid rgba(255,77,109,0.3)}
+    .aw-type-tag.mal{background:rgba(196,77,255,0.15);color:#C44DFF;border:1px solid rgba(196,77,255,0.3)}
+    .aw-type-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px}
+    .aw-type-desc{font-size:12px;color:var(--muted);line-height:1.6}
+    .aw-type-example{font-size:11px;color:var(--muted);margin-top:8px;font-style:italic}
+
+    .aw-platforms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .aw-platform-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px}
+    .aw-platform-header{display:flex;align-items:center;gap:10px}
+    .aw-platform-icon{font-size:24px}
+    .aw-platform-name{font-size:15px;font-weight:700;color:var(--ink)}
+    .aw-risk-bar{height:8px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden}
+    .aw-risk-fill{height:100%;border-radius:999px}
+    .aw-risk-fill.high{background:linear-gradient(90deg,#FF4D6D,#FF1744);width:90%}
+    .aw-risk-fill.med{background:linear-gradient(90deg,#FF9F45,#FFC107);width:55%}
+    .aw-risk-fill.low{background:linear-gradient(90deg,#2DD4BF,#00BCD4);width:30%}
+    .aw-risk-label{font-size:11px;color:var(--muted)}
+    .aw-platform-tips{font-size:12px;color:var(--muted);line-height:1.6}
+
+    .aw-sources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:16px}
+    .aw-source-card{background:rgba(45,212,191,0.07);border:1px solid rgba(45,212,191,0.2);border-radius:12px;padding:16px;text-decoration:none;transition:all .2s;display:block}
+    .aw-source-card:hover{background:rgba(45,212,191,0.14);transform:translateY(-2px)}
+    .aw-source-name{font-size:14px;font-weight:700;color:#2DD4BF;margin-bottom:4px}
+    .aw-source-desc{font-size:12px;color:var(--muted);line-height:1.5}
+    .aw-source-region{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-top:8px}
+
+    .aw-quiz-section{background:rgba(196,77,255,0.07);border:1px solid rgba(196,77,255,0.2);border-radius:16px;padding:28px;margin-bottom:32px}
+    .aw-quiz-title{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px}
+    .aw-quiz-intro{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+    .aw-quiz-q{margin-bottom:16px}
+    .aw-quiz-q-text{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px}
+    .aw-quiz-options{display:flex;flex-direction:column;gap:6px}
+    .aw-quiz-opt{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;text-align:left;font-family:'Space Grotesk',sans-serif;width:100%}
+    .aw-quiz-opt:hover{background:rgba(196,77,255,0.1);border-color:rgba(196,77,255,0.3);color:var(--ink)}
+    .aw-quiz-opt.correct{background:rgba(45,212,191,0.15);border-color:rgba(45,212,191,0.4);color:#2DD4BF}
+    .aw-quiz-opt.wrong{background:rgba(255,77,109,0.12);border-color:rgba(255,77,109,0.35);color:#FF4D6D}
+    .aw-quiz-feedback{font-size:12px;margin-top:8px;padding:8px 12px;border-radius:8px;line-height:1.5;display:none}
+    .aw-quiz-feedback.show{display:block}
+    .aw-quiz-feedback.correct{background:rgba(45,212,191,0.1);color:#2DD4BF}
+    .aw-quiz-feedback.wrong{background:rgba(255,77,109,0.1);color:#FF4D6D}
+
+    @media(max-width:900px){.aw-stats-row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.aw-stats-row{grid-template-columns:1fr}.aw-tips-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="nav-logo">🔎</span>
+    <span class="nav-title">Credible Chronicles</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="fake-news.html" class="nav-link">🏴 Popular Fake News</a>
+    <a href="awareness.html" class="nav-link active">🛡 Awareness Guide</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="hero-badge">Protect Yourself</div>
+    <h1 class="page-title">Misinformation Awareness Guide</h1>
+    <p class="page-sub">A comprehensive guide to understanding, identifying, and stopping the spread of misinformation. From recognising manipulation tactics to verifying claims — everything you need to navigate the modern information environment.</p>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <!-- Stats -->
+  <div class="aw-stats-row">
+    <div class="aw-stat-card"><div class="aw-stat-num">86%</div><div class="aw-stat-label">of people have unknowingly shared misinformation at least once</div></div>
+    <div class="aw-stat-card"><div class="aw-stat-num">6×</div><div class="aw-stat-label">faster — false news spreads 6× faster than true news on social media (MIT, 2018)</div></div>
+    <div class="aw-stat-card"><div class="aw-stat-num">3 sec</div><div class="aw-stat-label">average time spent reading a headline before sharing it</div></div>
+    <div class="aw-stat-card"><div class="aw-stat-num">70%</div><div class="aw-stat-label">of misinformation in India spreads through WhatsApp forward chains</div></div>
+  </div>
+
+  <!-- What is misinformation -->
+  <div class="aw-section">
+    <div class="aw-section-title">Understanding the Three Types</div>
+    <div class="aw-section-intro">Not all false information is the same. Researchers classify it into three categories based on intent. Understanding which type you're dealing with helps you respond appropriately — and stop its spread.</div>
+    <div class="aw-types-grid">
+      <div class="aw-type-card">
+        <span class="aw-type-tag mis">MISINFORMATION</span>
+        <div class="aw-type-name">False but not intentional</div>
+        <div class="aw-type-desc">False or inaccurate information shared without the intent to deceive. Often happens when people share without checking, or genuinely believe something that is incorrect.</div>
+        <div class="aw-type-example">Example: Sharing an old news story as if it just happened because you didn't notice the date.</div>
+      </div>
+      <div class="aw-type-card">
+        <span class="aw-type-tag dis">DISINFORMATION</span>
+        <div class="aw-type-name">False and deliberately crafted</div>
+        <div class="aw-type-desc">Deliberately created and spread false information with the specific intent to deceive, manipulate, or cause harm. Created by bad actors with clear goals.</div>
+        <div class="aw-type-example">Example: Fabricated quote attributed to a politician, designed to change voter opinion before an election.</div>
+      </div>
+      <div class="aw-type-card">
+        <span class="aw-type-tag mal">MALINFORMATION</span>
+        <div class="aw-type-name">True but weaponised</div>
+        <div class="aw-type-desc">Real information shared with the deliberate intent to cause harm. Uses genuine facts but out of context, at strategic times, to damage reputations or incite conflict.</div>
+        <div class="aw-type-example">Example: Sharing a true but 10-year-old photo of someone in a context designed to falsely imply current behaviour.</div>
+      </div>
+      <div class="aw-type-card">
+        <span class="aw-type-tag mal">SATIRE / PARODY</span>
+        <div class="aw-type-name">Not intended to deceive — but often does</div>
+        <div class="aw-type-desc">Satirical content that is not false per se, but is mistaken for genuine news by people who encounter it without context. Especially dangerous when screenshots remove the satire label.</div>
+        <div class="aw-type-example">Example: A satirical news article headline shared as a screenshot without the "satire" label.</div>
+      </div>
+      <div class="aw-type-card">
+        <span class="aw-type-tag dis">PROPAGANDA</span>
+        <div class="aw-type-name">One-sided persuasion</div>
+        <div class="aw-type-desc">Information that presents only one side of an issue, uses emotional manipulation, and omits contradictory facts. May contain true statements but is designed to persuade rather than inform.</div>
+        <div class="aw-type-example">Example: A political ad that uses technically accurate statistics but omits crucial context that would change the meaning.</div>
+      </div>
+      <div class="aw-type-card">
+        <span class="aw-type-tag mis">CLICKBAIT</span>
+        <div class="aw-type-name">Misleading but not entirely false</div>
+        <div class="aw-type-desc">Headlines or descriptions deliberately crafted to be more sensational than the actual content supports. The headline is misleading even when the article itself is more measured.</div>
+        <div class="aw-type-example">Example: "Scientists discover cure for cancer!" — article actually describes early-stage lab results with no clinical relevance yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to spot it -->
+  <div class="aw-section">
+    <div class="aw-section-title">8 Ways to Spot Misinformation</div>
+    <div class="aw-section-intro">These practical techniques can be applied to any piece of information before you believe or share it. They take less than 2 minutes and can prevent you from unknowingly spreading harmful content.</div>
+    <div class="aw-tips-grid">
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">🔍</span>
+          <span class="aw-tip-name">1. Investigate the source</span>
+        </div>
+        <div class="aw-tip-body">Before believing anything, check who published it. Search the outlet name — does it have a proper About page, founding date, editorial team, and contact information? Unknown sites with no author names, no "About" page, and domain names that mimic established outlets (like "abcnews.com.co" vs "abcnews.go.com") are major red flags. Also search the outlet name plus "bias" or "credibility" to see how it's rated by media watchdogs.</div>
+        <div class="aw-tip-example"><strong>Pro tip</strong>Try searching the site name on Media Bias/Fact Check (mediabiasfactcheck.com) or AllSides.com to see its credibility rating and political leaning before trusting its content.</div>
+      </div>
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">📅</span>
+          <span class="aw-tip-name">2. Always check the date</span>
+        </div>
+        <div class="aw-tip-body">Old news is regularly recycled as breaking news. A genuine article from 2015 about a disease outbreak might be shared in 2026 to create false panic. Screenshots of news headlines are particularly dangerous because they remove the date automatically. Always look for the publication date before forming any opinion — it's usually near the headline or author byline. If you can't find it, be very suspicious.</div>
+        <div class="aw-tip-example"><strong>Real example</strong>A 2015 photo of refugee boats in the Mediterranean was repeatedly shared in 2020 with false captions claiming it showed "current" migration — the original context was completely different.</div>
+      </div>
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">😤</span>
+          <span class="aw-tip-name">3. Pause when you feel strong emotions</span>
+        </div>
+        <div class="aw-tip-body">If a headline makes you furious, terrified, triumphant, or deeply saddened — that is exactly what misinformation is engineered to do. Emotional arousal reduces critical thinking and increases sharing. Researchers at MIT found that emotional content is shared 6× faster than neutral content. The more intensely a claim makes you feel, the more carefully you should verify it before doing anything with it.</div>
+        <div class="aw-tip-example"><strong>The rule</strong>Strong emotion = forced pause. The stronger the feeling, the longer the pause before sharing. Ask yourself: "Why does this make me feel this way? Who benefits from me feeling this way?"</div>
+      </div>
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">🗞</span>
+          <span class="aw-tip-name">4. Read beyond the headline</span>
+        </div>
+        <div class="aw-tip-body">59% of all links shared on social media are shared without ever being opened (Columbia University study, 2016). Headlines are written to be shared, not necessarily to be accurate. Many headlines are technically true but wildly misleading — the actual article often contains crucial caveats, context, or contradictions that completely change the meaning. Always read the full article before forming any view, let alone sharing.</div>
+        <div class="aw-tip-example"><strong>Example</strong>"Scientists find aspirin cures Alzheimer's" — article actually describes a small preliminary study with mice, with researchers cautioning it's 10+ years from any clinical application. The headline and reality are completely different.</div>
+      </div>
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">🔗</span>
+          <span class="aw-tip-name">5. Cross-check with 3 independent sources</span>
+        </div>
+        <div class="aw-tip-body">If a claim is true and significant, multiple independent news organisations will report it. If only one obscure website covers it, or if only sources with a clear ideological agenda report it, be very suspicious. Use at least 3 independent sources — Reuters, AP News, and BBC are good defaults because they have strong editorial standards and no single political owner. If major outlets don't have it, it probably hasn't happened.</div>
+        <div class="aw-tip-example"><strong>The 3-source rule</strong>Look for Reuters, AP News, and BBC coverage. These three operate independently, across different countries, with different editorial teams — if all three report something, it's almost certainly real.</div>
+      </div>
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">🖼</span>
+          <span class="aw-tip-name">6. Reverse search images and videos</span>
+        </div>
+        <div class="aw-tip-body">Fake news consistently reuses real images from completely different events, time periods, and locations. A flood photo from 2010 Pakistan gets shared as "today's disaster." A protest from 2018 Chile gets shared as "current riots in [whatever country is in the news today]." Right-click any suspicious image and select "Search image" in Chrome, or use Google Images, TinEye, or InVID (for videos) to find the original context and when the image was first published.</div>
+        <div class="aw-tip-example"><strong>Tools to use</strong>Google Images reverse search (free), TinEye.com (for finding image origins), InVID / WeVerify plugin (for video verification) — all free and work in minutes.</div>
+      </div>
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">🎯</span>
+          <span class="aw-tip-name">7. Check who benefits from the claim</span>
+        </div>
+        <div class="aw-tip-body">Ask: who benefits if this claim is widely believed? Who loses? Financial incentives (clicks, ad revenue), political incentives (damaging opponents, mobilising voters), and ideological incentives all drive misinformation creation. If a claim conveniently perfectly aligns with one political party's interests while damaging another, or if it promotes a specific product as a miracle cure, those are red flags to verify extra carefully.</div>
+        <div class="aw-tip-example"><strong>Follow the incentive</strong>"This one food cures all disease" → who profits from you believing this? Usually someone selling that food as a supplement. The incentive structure reveals the likely motivation.</div>
+      </div>
+
+      <div class="aw-tip-card">
+        <div class="aw-tip-header">
+          <span class="aw-tip-icon">🤖</span>
+          <span class="aw-tip-name">8. Watch for AI-generated content</span>
+        </div>
+        <div class="aw-tip-body">AI-generated text, images, audio, and video are rapidly becoming indistinguishable from real content. For images: look for unnatural details in faces (too-perfect symmetry, wrong number of fingers, odd backgrounds), AI-generated text patterns (unusually smooth writing, no specific named sources), and deepfake videos (unnatural blinking rates, lip-sync issues, strange lighting). Use AI detection tools like GPTZero (text), Hive Moderation (images), or Deepware (videos) when suspicious.</div>
+        <div class="aw-tip-example"><strong>Red flags for AI content</strong>Too-perfect faces, backgrounds that don't quite make sense, writing that's unusually polished with no specific facts, quotes without named sources, and images where hands or text within the image look distorted.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Before you share checklist -->
+  <div class="aw-section">
+    <div class="aw-section-title">Before You Share — The Checklist</div>
+    <div class="aw-section-intro">Run through this quick checklist before sharing any piece of news, claim, or message. It takes under 2 minutes and can prevent you from being part of the problem.</div>
+    <div class="aw-checklist">
+      <div class="aw-checklist-title">✅ The 10-point sharing checklist</div>
+      <div class="aw-check-item"><span class="aw-check-icon">1️⃣</span><span class="aw-check-text"><strong>Do I know who originally published this?</strong> If it's anonymous or from an unfamiliar source, stop and verify before sharing.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">2️⃣</span><span class="aw-check-text"><strong>Do I know when this was published?</strong> Old news shared as new news is one of the most common forms of misinformation. Check the date.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">3️⃣</span><span class="aw-check-text"><strong>Have I actually read the full article or message, not just the headline?</strong> Headlines often misrepresent or exaggerate the actual content.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">4️⃣</span><span class="aw-check-text"><strong>Is this reported by at least 2 other credible, independent outlets?</strong> If only one source has this story, be very cautious.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">5️⃣</span><span class="aw-check-text"><strong>Am I feeling strong emotions right now — anger, fear, outrage?</strong> If yes, wait 30 minutes before deciding whether to share.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">6️⃣</span><span class="aw-check-text"><strong>Does this claim have specific, verifiable evidence?</strong> Vague phrases like "sources say" or "studies show" without citations are red flags.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">7️⃣</span><span class="aw-check-text"><strong>If there's an image, have I verified it's from this context?</strong> Reverse image search takes 30 seconds and can prevent significant harm.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">8️⃣</span><span class="aw-check-text"><strong>Does this message ask me to forward it urgently or "before it gets deleted"?</strong> Legitimate news does not come with urgency pressure to forward. This is a manipulation tactic.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">9️⃣</span><span class="aw-check-text"><strong>Would I be comfortable if the person this is about could see me sharing it?</strong> If not, reconsider.</span></div>
+      <div class="aw-check-item"><span class="aw-check-icon">🔟</span><span class="aw-check-text"><strong>Have I fact-checked this on a dedicated fact-checking site?</strong> A 30-second search on Snopes, BoomLive, or AltNews can save you from spreading harmful misinformation.</span></div>
+    </div>
+  </div>
+
+  <!-- Platform-specific risks -->
+  <div class="aw-section">
+    <div class="aw-section-title">Platform-Specific Risks &amp; How to Stay Safe</div>
+    <div class="aw-section-intro">Different platforms have different misinformation risks and different ways to protect yourself. Here's what you need to know about each major platform you likely use.</div>
+    <div class="aw-platforms-grid">
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">💬</span><span class="aw-platform-name">WhatsApp</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill high"></div></div>
+        <div class="aw-risk-label">🔴 Highest misinformation risk in India</div>
+        <div class="aw-platform-tips">End-to-end encryption means no fact-checking. Forward limit (5 chats) helps but doesn't stop reach. Always check messages marked "Forwarded many times" through a fact-checker before sharing. Never click links in forwarded messages claiming government benefits, free products, or emergency alerts without verifying on official websites first.</div>
+      </div>
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">📘</span><span class="aw-platform-name">Facebook</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill high"></div></div>
+        <div class="aw-risk-label">🔴 High risk — elderly users most vulnerable</div>
+        <div class="aw-platform-tips">Facebook's algorithm prioritises engaging content — outrage and fear drive engagement, so misinformation spreads faster. Use "Why am I seeing this?" and report false information. Enable "News Feed Preferences" to prioritise credible sources. Avoid groups dedicated to single political viewpoints — they create echo chambers reinforced by the algorithm.</div>
+      </div>
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">🐦</span><span class="aw-platform-name">Twitter / X</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill high"></div></div>
+        <div class="aw-risk-label">🔴 High risk — fact-check labels reduced</div>
+        <div class="aw-platform-tips">Community Notes can help correct false information but relies on volunteer consensus. With reduced moderation since 2022, false content persists longer. Do not treat trending topics as verified news. Always click through and read the actual source before forming opinions on any viral tweet or X post.</div>
+      </div>
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">📱</span><span class="aw-platform-name">Instagram</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill med"></div></div>
+        <div class="aw-risk-label">🟡 Medium risk — image-heavy misinformation</div>
+        <div class="aw-platform-tips">Misinformation here tends to be visual — manipulated photos, out-of-context images, misleading infographics. Instagram Stories are particularly risky because they disappear after 24 hours, making fact-checking harder. Always reverse-image search suspicious photos and check who originally posted an infographic before sharing it.</div>
+      </div>
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">▶️</span><span class="aw-platform-name">YouTube</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill high"></div></div>
+        <div class="aw-risk-label">🔴 High risk — long-form radicalisation</div>
+        <div class="aw-platform-tips">YouTube's recommendation algorithm can lead viewers down rabbit holes of increasingly extreme content. Documentaries and "deep dive" videos can appear credible while spreading conspiracy theories. Check the channel's credibility, look at what other videos it produces, and search for expert counterarguments before accepting claims made in videos.</div>
+      </div>
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">🎵</span><span class="aw-platform-name">TikTok / Reels</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill med"></div></div>
+        <div class="aw-risk-label">🟡 Growing risk — particularly for health claims</div>
+        <div class="aw-platform-tips">Short video format is particularly vulnerable to health misinformation (DIY medical treatments, miracle cures, dangerous "wellness" content). Never follow medical advice from social media videos regardless of the creator's following. Always verify with a qualified medical professional or government health authority before changing any health behaviour.</div>
+      </div>
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">📧</span><span class="aw-platform-name">Email Chains</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill med"></div></div>
+        <div class="aw-risk-label">🟡 Medium risk — targets older users</div>
+        <div class="aw-platform-tips">Email chains are often used to spread financial fraud (lottery wins, urgent bank issues) and health misinformation to older users less familiar with internet hoaxes. Banks and governments never ask for sensitive information via email. Never click links in unsolicited emails claiming prizes, inheritance, or urgent account issues.</div>
+      </div>
+
+      <div class="aw-platform-card">
+        <div class="aw-platform-header"><span class="aw-platform-icon">💼</span><span class="aw-platform-name">LinkedIn</span></div>
+        <div class="aw-risk-bar"><div class="aw-risk-fill low"></div></div>
+        <div class="aw-risk-label">🟢 Lower risk — but professional credibility exploitation</div>
+        <div class="aw-platform-tips">LinkedIn's professional context creates false credibility for misinformation. People are more likely to trust claims from someone with an impressive job title. Economic and AI misinformation is particularly common here. Verify cited statistics by checking original sources rather than taking presenter credentials as proof of accuracy.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mini quiz -->
+  <div class="aw-section">
+    <div class="aw-section-title">Test Your Skills</div>
+    <div class="aw-section-intro">Quick scenarios to test how well you can spot misinformation. These are based on real patterns used in actual fake news campaigns.</div>
+    <div class="aw-quiz-section">
+      <div class="aw-quiz-title">🧠 Misinformation Recognition Quiz</div>
+      <div class="aw-quiz-intro">For each scenario, pick the best response. Explanations appear after you choose.</div>
+
+      <div class="aw-quiz-q">
+        <div class="aw-quiz-q-text">1. You receive a WhatsApp message: "BREAKING: Government to give free smartphones to all citizens under 30 — register before midnight tonight through this link!" What do you do?</div>
+        <div class="aw-quiz-options">
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','This is a classic phishing scam. Legitimate government schemes never have overnight deadlines or are announced exclusively via WhatsApp. The urgency is designed to bypass critical thinking.')">Click the link immediately so you don\'t miss the deadline</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'correct','Correct! The urgency, WhatsApp-only announcement, and overnight deadline are all red flags. Verify on government.in or call the ministry directly.')">Check the government\'s official website and call the helpline to verify</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','Forwarding without checking makes you part of the spread. Even if you think it might be fake, verify first — if it is fake, you\'ve now helped it reach more victims.')">Forward it to family members so they can also apply if real</button>
+        </div>
+        <div class="aw-quiz-feedback"></div>
+      </div>
+
+      <div class="aw-quiz-q">
+        <div class="aw-quiz-q-text">2. A viral Facebook post says a famous actor died in a car crash, with a photo that looks like a news screenshot. The post has 50,000 shares. What's your first step?</div>
+        <div class="aw-quiz-options">
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','50,000 shares means nothing if the original share was false. False news often gets more shares than corrections. Popularity is not evidence of truth.')">Share it — it must be true if 50,000 people shared it</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','Commenting "is this true?" helps spread the post\'s reach without verifying anything. The algorithm treats comments as engagement and shows the post to more people.')">Comment asking if it\'s true</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'correct','Correct! Search the actor\'s name on Google News or directly on Reuters/AP. Real celebrity deaths are reported within minutes by major outlets. If it\'s not there, it didn\'t happen.')">Search the actor\'s name on a major news site before doing anything</button>
+        </div>
+        <div class="aw-quiz-feedback"></div>
+      </div>
+
+      <div class="aw-quiz-q">
+        <div class="aw-quiz-q-text">3. You see a dramatic photo shared on Twitter claiming to show "yesterday's protest in Delhi." The image looks shocking. What should you do?</div>
+        <div class="aw-quiz-options">
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'correct','Correct! Reverse image search is the fastest way to check if a photo is being used out of context. TinEye or Google Images can find where a photo first appeared in seconds.')">Reverse image search the photo to find when and where it was originally taken</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','Screenshots remove context and dates, making misinformation harder to trace. This spreads the false narrative further with no way for viewers to verify.')">Screenshot and share to spread awareness about the protest</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','Doing nothing is better than sharing, but reverse image search takes 30 seconds and can help you either verify the claim or report misinformation to the platform.')">Ignore it since it\'s probably fake</button>
+        </div>
+        <div class="aw-quiz-feedback"></div>
+      </div>
+
+      <div class="aw-quiz-q">
+        <div class="aw-quiz-q-text">4. A YouTube video with 2 million views claims a common vegetable "cures diabetes in 3 days." The presenter has impressive-sounding credentials. What do you do?</div>
+        <div class="aw-quiz-options">
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','View count means the algorithm promoted it — not that it\'s medically accurate. YouTube\'s algorithm rewards engagement, not medical accuracy. Many dangerous health videos have millions of views.')">Trust it — 2 million views means it must be credible</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'correct','Correct! Search the specific claim on PubMed or Google Scholar. If a vegetable genuinely cured diabetes, it would be in clinical trials and major medical journals — not exclusively on YouTube.')">Search for peer-reviewed studies on this claim in medical journals</button>
+          <button class="aw-quiz-opt" onclick="quizAnswer(this,'wrong','Trying it without medical supervision for a serious condition like diabetes can be dangerous. Always consult a qualified doctor before changing any treatment or diet for medical conditions.')">Try it for 3 days to see if it works on yourself</button>
+        </div>
+        <div class="aw-quiz-feedback"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Trusted sources -->
+  <div class="aw-section">
+    <div class="aw-section-title">Trusted Fact-Checking Resources</div>
+    <div class="aw-section-intro">These organisations employ professional fact-checkers who investigate specific claims using documented evidence and publish their findings with full source citations. Bookmark at least 2–3 of these relevant to your region.</div>
+    <div class="aw-sources-grid">
+      <a href="https://www.boomlive.in" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">BoomLive</div>
+        <div class="aw-source-desc">India's most comprehensive fact-checker. Covers politics, health, communal misinformation, and viral social media claims in English and Hindi.</div>
+        <div class="aw-source-region">🇮🇳 India · English & Hindi</div>
+      </a>
+      <a href="https://www.altnews.in" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">AltNews</div>
+        <div class="aw-source-desc">Specialises in debunking communally charged misinformation and politically motivated fake news in India. Strong track record on WhatsApp hoaxes.</div>
+        <div class="aw-source-region">🇮🇳 India · English & Hindi</div>
+      </a>
+      <a href="https://pib.gov.in/factcheck.aspx" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">PIB Fact Check</div>
+        <div class="aw-source-desc">Government of India's official fact-checking unit. Best resource for verifying claims about government schemes, policies, and official announcements.</div>
+        <div class="aw-source-region">🇮🇳 India Official · Multiple languages</div>
+      </a>
+      <a href="https://www.vishvasnews.com" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">Vishvas News</div>
+        <div class="aw-source-desc">IFCN-certified Indian fact-checker. Strong on regional language misinformation and local political claims across multiple Indian states.</div>
+        <div class="aw-source-region">🇮🇳 India · Hindi & Regional</div>
+      </a>
+      <a href="https://www.snopes.com" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">Snopes</div>
+        <div class="aw-source-desc">The world's oldest and most comprehensive fact-checking website. Excellent for global viral claims, US politics, and long-circulating internet hoaxes.</div>
+        <div class="aw-source-region">🌍 Global · English</div>
+      </a>
+      <a href="https://www.factcheck.org" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">FactCheck.org</div>
+        <div class="aw-source-desc">Non-partisan fact-checking project of the Annenberg Public Policy Center. Specialises in US political claims and scientific consensus topics.</div>
+        <div class="aw-source-region">🇺🇸 USA · English</div>
+      </a>
+      <a href="https://www.politifact.com" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">PolitiFact</div>
+        <div class="aw-source-desc">Pulitzer Prize-winning fact-checker with its distinctive "Truth-O-Meter" ratings from "True" to "Pants on Fire." Focused on US political statements.</div>
+        <div class="aw-source-region">🇺🇸 USA · English</div>
+      </a>
+      <a href="https://apnews.com/hub/ap-fact-check" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">AP Fact Check</div>
+        <div class="aw-source-desc">The Associated Press's fact-checking division. Global coverage with the AP's unmatched network of journalists in 250+ locations worldwide.</div>
+        <div class="aw-source-region">🌍 Global · English</div>
+      </a>
+      <a href="https://www.reuters.com/fact-check" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">Reuters Fact Check</div>
+        <div class="aw-source-desc">Thomson Reuters's dedicated fact-checking unit. Particularly strong on international claims, scientific topics, and breaking news verification.</div>
+        <div class="aw-source-region">🌍 Global · English</div>
+      </a>
+      <a href="https://fullfact.org" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">Full Fact</div>
+        <div class="aw-source-desc">UK's leading independent fact-checking charity. Strong on UK political claims, NHS health information, and European Union topics.</div>
+        <div class="aw-source-region">🇬🇧 UK · English</div>
+      </a>
+      <a href="https://www.who.int/teams/risk-communication/infodemic-management" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">WHO Infodemic Hub</div>
+        <div class="aw-source-desc">World Health Organization's dedicated misinformation response unit. Essential for health-related claims, pandemic information, and global health policy facts.</div>
+        <div class="aw-source-region">🌍 Global Health · Multiple languages</div>
+      </a>
+      <a href="https://cybercrime.gov.in" target="_blank" rel="noopener" class="aw-source-card">
+        <div class="aw-source-name">Cyber Crime Portal India</div>
+        <div class="aw-source-desc">India's official portal to report cyber crimes including financial fraud, phishing, and harmful misinformation. Report scam WhatsApp messages here.</div>
+        <div class="aw-source-region">🇮🇳 India Official · Report crimes</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function quizAnswer(btn, result, explanation) {
+  const qDiv  = btn.closest('.aw-quiz-q');
+  const opts  = qDiv.querySelectorAll('.aw-quiz-opt');
+  const fb    = qDiv.querySelector('.aw-quiz-feedback');
+  opts.forEach(o => o.disabled = true);
+  btn.classList.add(result);
+  fb.className = 'aw-quiz-feedback show ' + result;
+  fb.textContent = (result === 'correct' ? '✅ ' : '❌ ') + explanation;
+}
+</script>
+</body>
+</html>
