@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Popular Fake News — Credible Chronicles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    .fn-hero-stats{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .fn-stat{background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.25);border-radius:12px;padding:14px 20px;min-width:130px}
+    .fn-stat-num{font-family:'DM Serif Display',serif;font-size:30px;color:#FF4D6D;line-height:1;margin-bottom:4px}
+    .fn-stat-label{font-size:12px;color:var(--muted);line-height:1.4}
+    .fn-tabs{display:flex;gap:10px;margin:28px 0 20px;flex-wrap:wrap}
+    .fn-tab{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:999px;color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:9px 20px;cursor:pointer;transition:all .2s}
+    .fn-tab:hover{background:rgba(255,77,109,0.1);color:var(--ink)}
+    .fn-tab.active{background:rgba(255,77,109,0.18);border-color:rgba(255,77,109,0.4);color:#FF4D6D}
+    .fn-section-header{margin-bottom:20px}
+    .fn-section-name{font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink);margin-bottom:6px}
+    .fn-section-desc{font-size:14px;color:var(--muted);line-height:1.6;max-width:720px}
+    .fn-timeline{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:22px;margin-bottom:28px}
+    .fn-timeline-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px}
+    .fn-tl-item{display:flex;gap:16px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .fn-tl-item:last-child{border-bottom:none}
+    .fn-tl-year{font-size:12px;font-weight:700;color:#FF4D6D;min-width:40px;padding-top:2px}
+    .fn-tl-text{font-size:13px;color:var(--muted);line-height:1.55}
+    .fn-tl-text strong{color:var(--ink)}
+    .fn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;margin-bottom:48px}
+    .fn-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,77,109,0.15);border-radius:16px;padding:22px;transition:all .2s;display:flex;flex-direction:column;gap:12px}
+    .fn-card:hover{border-color:rgba(255,77,109,0.4);background:rgba(255,77,109,0.06);transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,77,109,0.12)}
+    .fn-card-top{display:flex;align-items:flex-start;gap:10px}
+    .fn-badge{font-size:10px;font-weight:700;letter-spacing:.07em;padding:3px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+    .fn-badge.debunked{background:rgba(255,77,109,0.18);color:#FF4D6D;border:1px solid rgba(255,77,109,0.3)}
+    .fn-badge.misleading{background:rgba(255,159,69,0.18);color:#FF9F45;border:1px solid rgba(255,159,69,0.3)}
+    .fn-claim{font-size:15px;font-weight:700;color:var(--ink);line-height:1.4}
+    .fn-origin{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px}
+    .fn-origin-dot{width:6px;height:6px;border-radius:50%;background:#FF4D6D;flex-shrink:0}
+    .fn-divider{height:1px;background:rgba(255,255,255,0.07)}
+    .fn-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px}
+    .fn-truth{font-size:13px;color:var(--ink);line-height:1.65}
+    .fn-why{font-size:13px;color:var(--muted);line-height:1.65}
+    .fn-impact{display:flex;align-items:flex-start;gap:8px;background:rgba(255,77,109,0.08);border-radius:8px;padding:10px 12px;font-size:12px;color:#FF4D6D;line-height:1.5}
+    .fn-sources{display:flex;flex-wrap:wrap;gap:6px}
+    .fn-source-tag{font-size:11px;padding:3px 10px;border-radius:999px;background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.2);color:#2DD4BF}
+    .fn-cta{margin-top:auto}
+    .fn-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(196,77,255,0.15);border:1px solid rgba(196,77,255,0.3);border-radius:999px;padding:10px 16px;font-size:12px;font-weight:700;color:#C44DFF;cursor:pointer;transition:all .2s;width:100%;font-family:'Space Grotesk',sans-serif}
+    .fn-btn:hover{background:rgba(196,77,255,0.28)}
+    .hidden{display:none!important}
+    @media(max-width:720px){.fn-grid{grid-template-columns:1fr}.fn-hero-stats{gap:10px}.fn-stat{min-width:110px}}
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="nav-logo">🔎</span>
+    <span class="nav-title">Credible Chronicles</span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="fake-news.html" class="nav-link active">🏴 Popular Fake News</a>
+    <a href="awareness.html" class="nav-link">🛡 Awareness Guide</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="hero-badge">Hall of Shame</div>
+    <h1 class="page-title">Popular Fake News</h1>
+    <p class="page-sub">The most dangerous and widely-spread misinformation fully debunked with evidence, real-world impact, and verified sources. Click any claim to run a live AI analysis.</p>
+    <div class="fn-hero-stats">
+      <div class="fn-stat"><div class="fn-stat-num">500B+</div><div class="fn-stat-label">fake news pieces shared on social media in 2023</div></div>
+      <div class="fn-stat"><div class="fn-stat-num">6×</div><div class="fn-stat-label">faster than truth — MIT study on spread speed</div></div>
+      <div class="fn-stat"><div class="fn-stat-num">70%</div><div class="fn-stat-label">of Indians encounter misinformation daily on WhatsApp</div></div>
+      <div class="fn-stat"><div class="fn-stat-num">$78B</div><div class="fn-stat-label">annual global damage from health misinformation alone</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="fn-tabs">
+    <button class="fn-tab active" onclick="showCat('health',this)">🏥 Health</button>
+    <button class="fn-tab" onclick="showCat('politics',this)">🏛 Politics</button>
+    <button class="fn-tab" onclick="showCat('tech',this)">💻 Tech & Science</button>
+    <button class="fn-tab" onclick="showCat('india',this)">🇮🇳 India</button>
+    <button class="fn-tab" onclick="showCat('climate',this)">🌍 Climate</button>
+    <button class="fn-tab" onclick="showCat('finance',this)">💰 Finance</button>
+  </div>
+
+  <!-- HEALTH -->
+  <div id="cat-health">
+    <div class="fn-section-header">
+      <div class="fn-section-name">🏥 Health &amp; Medicine Misinformation</div>
+      <div class="fn-section-desc">Health misinformation is the deadliest category — it leads people to reject life-saving treatments, take dangerous remedies, and distrust medical institutions. The WHO has classified it as a global "infodemic" requiring urgent action.</div>
+    </div>
+    <div class="fn-timeline">
+      <div class="fn-timeline-title">Timeline of major health hoaxes</div>
+      <div class="fn-tl-item"><div class="fn-tl-year">1998</div><div class="fn-tl-text"><strong>Wakefield MMR-autism fraud</strong> — fraudulent Lancet study published, later retracted. Sparked the global anti-vaccine movement still active today.</div></div>
+      <div class="fn-tl-item"><div class="fn-tl-year">2009</div><div class="fn-tl-text"><strong>H1N1 vaccine conspiracy</strong> — claims swine flu vaccine caused sterility and contained tracking chips spread globally via email chains.</div></div>
+      <div class="fn-tl-item"><div class="fn-tl-year">2014</div><div class="fn-tl-text"><strong>Ebola bleach cure</strong> — claim that drinking bleach cured Ebola circulated in West Africa, directly causing multiple poisoning deaths.</div></div>
+      <div class="fn-tl-item"><div class="fn-tl-year">2020</div><div class="fn-tl-text"><strong>COVID-19 infodemic</strong> — 5G, bleach cures, microchips, and Bill Gates conspiracy theories reached billions globally. WHO declared it a parallel pandemic.</div></div>
+      <div class="fn-tl-item"><div class="fn-tl-year">2023</div><div class="fn-tl-text"><strong>AI-generated medical advice</strong> — rise of fake AI-written health articles recommending dangerous treatments, spread by social media algorithms rewarding engagement.</div></div>
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">5G towers cause COVID-19 by spreading the virus through radio waves</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>UK, 2020 · WhatsApp &amp; Facebook · 50M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">5G is radio frequency technology. Radio waves are non-ionising electromagnetic radiation — they physically cannot carry, transport, or replicate biological entities like viruses. COVID-19 spreads through respiratory droplets between humans. Crucially, many countries with zero 5G infrastructure had severe COVID outbreaks, while some heavily 5G-equipped countries controlled it well. The claim is impossible at a fundamental scientific level.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">COVID-19 spreads through respiratory droplets and close contact. Protections are masks, ventilation, vaccination, and hand hygiene — confirmed by thousands of peer-reviewed studies. 5G is simply the 5th generation of mobile network technology operating on higher radio frequencies than 4G.</div>
+        <div class="fn-impact">⚠️ 77 UK cell towers were set on fire. Telecom engineers were physically attacked. This is among the costliest pieces of misinformation in recent history.</div>
+        <div class="fn-sources"><span class="fn-source-tag">WHO</span><span class="fn-source-tag">Snopes</span><span class="fn-source-tag">Reuters</span><span class="fn-source-tag">Full Fact</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('5G towers cause COVID-19 by spreading the virus through radio waves')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">COVID vaccines contain microchips that track your location via Bluetooth</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>USA, 2021 · Telegram &amp; Facebook · 80M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">The smallest functional microchip in 2024 is ~0.3mm — far too large to pass through a vaccine needle (0.4mm inner diameter). Microchips also require a power source. Vaccine ingredients are publicly listed on regulatory documents and independently verifiable by any laboratory. The conspiracy was traced to a misrepresentation of an unrelated 2019 Microsoft patent about activity data — nothing to do with vaccines.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">COVID-19 vaccines contain mRNA or viral vector material, lipid nanoparticles, salts, sugars, and preservatives — all fully disclosed. Regulatory agencies in 194+ countries reviewed complete ingredient lists independently. No chips, no tracking devices, no nanotechnology capable of surveillance.</div>
+        <div class="fn-impact">⚠️ Vaccine hesitancy from this claim is estimated to have contributed to 200,000+ preventable COVID deaths in the US alone (Commonwealth Fund, 2022).</div>
+        <div class="fn-sources"><span class="fn-source-tag">FDA</span><span class="fn-source-tag">PolitiFact</span><span class="fn-source-tag">AP News</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('COVID vaccines contain microchips that track your location via Bluetooth')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Vaccines cause autism in children — proven by hidden government studies</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>UK, 1998 (Wakefield fraud) · Facebook · 100M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">The 1998 Lancet study by Wakefield was fully retracted in 2010 after he was found to have manipulated data, received £435,000 from lawyers suing vaccine makers, and subjected children to unnecessary invasive tests. He lost his medical license. Over 30 major studies involving 1.2 million+ children across multiple countries found zero link between MMR vaccine and autism.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Autism spectrum disorder develops during prenatal brain development — before birth. The timing coincides with vaccine schedules but correlation is not causation. Unvaccinated children develop autism at identical rates to vaccinated children. The single fraudulent study caused a public health crisis that continues to kill children 25+ years later.</div>
+        <div class="fn-impact">⚠️ Measles cases rose 300% globally in 2018–2019. Measles was declared endemic again in the UK in 2018 after being eliminated. Children have died from preventable diseases as a direct result.</div>
+        <div class="fn-sources"><span class="fn-source-tag">Lancet</span><span class="fn-source-tag">CDC</span><span class="fn-source-tag">BMJ</span><span class="fn-source-tag">Cochrane</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Vaccines cause autism in children proven by hidden government studies')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Drinking bleach or disinfectant cures COVID-19 and kills the virus</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>USA, April 2020 · Facebook &amp; WhatsApp · Went viral after political speech</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Bleach (sodium hypochlorite) and disinfectants are acutely toxic when ingested. They cause chemical burns to the mouth, throat, esophagus, and stomach, can cause organ failure, and are potentially lethal. They work on surfaces by destroying protein structures — the human body's internal chemistry is entirely different. No medical body anywhere in the world has ever suggested ingesting cleaning products for any illness.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">COVID-19 treatment involves antiviral medications (like Paxlovid), oxygen therapy, and supportive hospital care. Disinfectants are for surfaces only. COVID-19 treatment never involves cleaning products under any circumstances.</div>
+        <div class="fn-impact">⚠️ US Poison Control centers reported a 20% spike in disinfectant-related calls the week this claim went viral. Multiple hospitalisations recorded across the US and UK.</div>
+        <div class="fn-sources"><span class="fn-source-tag">CDC</span><span class="fn-source-tag">Poison Control</span><span class="fn-source-tag">WHO</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Drinking bleach or disinfectant cures COVID-19 and kills the virus')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge misleading">MISLEADING</span><span class="fn-claim">Eating garlic daily prevents and cures all types of cancer completely</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>South Asia · WhatsApp · 30M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's misleading</div>
+        <div class="fn-why">Some lab studies show allicin in garlic may have modest anti-tumour effects in isolated cells. However, lab results don't automatically translate to clinical efficacy in humans. No clinical trial has demonstrated garlic prevents or cures cancer. Cancer is over 100 different diseases with different causes. Calling garlic a "cure for all types" is dangerously misleading and discourages evidence-based treatment.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Garlic is nutritious and may modestly reduce cardiovascular risk. A diet rich in vegetables including garlic may slightly reduce cancer risk as part of healthy living. However, it cannot replace surgery, chemotherapy, immunotherapy, or radiation for active cancer. Delaying proper treatment in favour of dietary remedies leads to cancers progressing to inoperable stages.</div>
+        <div class="fn-impact">⚠️ Documented cases of patients in India and Southeast Asia delaying cancer treatment for dietary remedies, resulting in late-stage diagnoses. Widely published in oncology journals.</div>
+        <div class="fn-sources"><span class="fn-source-tag">WHO</span><span class="fn-source-tag">Cancer Research UK</span><span class="fn-source-tag">NIH</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Eating garlic daily prevents and cures all types of cancer')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Hospitals are secretly killing patients to inflate COVID-19 death numbers for profit</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>USA, 2020 · YouTube · 15M+ views</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Death certifications follow strict legal and criminal protocols. Falsifying a death certificate is a criminal offence in every jurisdiction. Multiple independent excess mortality analyses found COVID deaths were actually undercounted by an estimated 15 million globally (The Lancet). Countries with minimal official COVID reporting still showed massive excess mortality in independent analyses — confirming undercounting, not overcounting.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Frontline healthcare workers suffered severe psychological trauma, burnout, PTSD, and died during the pandemic. They were not profiting from patient deaths. Excess mortality data from every country confirms millions of additional deaths during the pandemic period. The challenge has consistently been undercounting, not overcounting.</div>
+        <div class="fn-impact">⚠️ This conspiracy caused people with treatable conditions to avoid hospitals. People died at home from strokes, heart attacks, and other emergencies rather than seek care they feared.</div>
+        <div class="fn-sources"><span class="fn-source-tag">The Lancet</span><span class="fn-source-tag">CDC</span><span class="fn-source-tag">Reuters</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Hospitals are secretly killing patients to inflate COVID death numbers')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POLITICS -->
+  <div id="cat-politics" class="hidden">
+    <div class="fn-section-header">
+      <div class="fn-section-name">🏛 Politics &amp; Government Misinformation</div>
+      <div class="fn-section-desc">Political misinformation undermines democracy, fuels societal division, and has directly caused real-world violence. It is often deliberately manufactured by political operatives and amplified by social media algorithms that prioritise outrage over accuracy.</div>
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">The 2020 US Presidential Election was stolen through widespread voter fraud</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>USA, November 2020 · Twitter &amp; conservative media · 200M+ impressions</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">60+ lawsuits were filed across state and federal courts — all dismissed or ruled against for lack of evidence. Judges appointed by both Republican and Democratic presidents rejected the claims. The Supreme Court (6-3 conservative majority) declined to hear the case. The Department of Justice under Trump-appointee William Barr explicitly stated there was no evidence of widespread fraud sufficient to change the outcome. Every state's election officials — including Republicans — certified the results independently.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Joe Biden won with 306 Electoral College votes and 81 million popular votes — the highest vote total in US history. Independent election monitors, both domestic and international, described the election as well-administered and legitimate. CISA (Cybersecurity and Infrastructure Security Agency) called it "the most secure election in American history."</div>
+        <div class="fn-impact">⚠️ Directly caused the January 6, 2021 Capitol insurrection: 7 deaths, 140 police officers injured, $30M+ in damage, 1,000+ criminal prosecutions. The most serious domestic security incident in the US in decades.</div>
+        <div class="fn-sources"><span class="fn-source-tag">AP News</span><span class="fn-source-tag">Reuters</span><span class="fn-source-tag">DoJ</span><span class="fn-source-tag">CISA</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('The 2020 US election was stolen through widespread ballot fraud')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">COVID-19 was deliberately created in a lab as a bioweapon by Bill Gates and China</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>USA/Global, 2020 · Telegram &amp; Twitter · 90M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Independent genetic analysis of SARS-CoV-2 by thousands of scientists worldwide shows hallmarks of natural evolution, not laboratory engineering. A 2022 Science analysis found the virus most likely originated through natural zoonotic transmission at the Huanan seafood market. Bill Gates is a philanthropist funding vaccine distribution — he has zero connection to virology weapons research. The bioweapon claim requires accepting that every virologist on Earth is concealing the same secret.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">SARS-CoV-2 evolved naturally from bat coronaviruses, likely via an intermediate animal host. This is consistent with SARS (2003), MERS (2012), Ebola, and HIV origins. A lab leak origin (accidental, not intentional) remains a scientifically debated hypothesis — but zero evidence exists for deliberate creation as a weapon.</div>
+        <div class="fn-impact">⚠️ Led to 3,795+ documented anti-Asian hate incidents in the US in 2020 alone (Stop AAPI Hate). Directly linked to violence against Asian communities globally. Distracted from real public health responses.</div>
+        <div class="fn-sources"><span class="fn-source-tag">Science</span><span class="fn-source-tag">Nature</span><span class="fn-source-tag">WHO</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('COVID-19 was created in a lab as a bioweapon by Bill Gates and China')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">George Soros is secretly funding a plan to replace world governments with a one-world government</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Far-right media · Facebook · 40M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">George Soros openly funds the Open Society Foundations — a publicly disclosed network publishing annual reports, funding democracy and human rights work in 100+ countries. Every specific "secret plan" claim has been investigated by multiple independent news organisations and found baseless. The conspiracy draws heavily on century-old antisemitic tropes about Jewish people controlling world governments. His donations are entirely legal and publicly disclosed.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Open Society Foundations funds journalism, refugee assistance, electoral monitoring, and civil liberties — all transparent and publicly reported. While Soros's political donations are controversial to some, they are fully disclosed under election finance law. Conspiracy theories about him have been cited in manifestos preceding multiple mass murders.</div>
+        <div class="fn-impact">⚠️ The Pittsburgh synagogue shooter cited the Soros conspiracy before killing 11 people in 2018. The conspiracy has been linked to multiple violent attacks in the US and Europe.</div>
+        <div class="fn-sources"><span class="fn-source-tag">AP News</span><span class="fn-source-tag">Reuters</span><span class="fn-source-tag">Snopes</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('George Soros is funding a secret plan to replace world governments')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge misleading">MISLEADING</span><span class="fn-claim">The government adds fluoride to drinking water to make the population obedient and controllable</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Cold War US propaganda, 1950s · WhatsApp · 25M+ shares currently</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Community water fluoridation has been practiced since 1945 specifically to prevent dental decay — backed by 70+ years of research. At treatment levels (0.7mg/L in the US), fluoride is safe. The "mind control" claim originated from 1950s anti-communist propaganda with zero scientific basis. No study has ever demonstrated that fluoride affects cognition, behaviour, or political compliance at any dosage found in treated water.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Water fluoridation has reduced tooth decay by 25–30% in treated communities (CDC, 2023). It particularly benefits lower-income populations lacking dental care access. Endorsed by WHO, CDC, ADA, and health authorities in 60+ countries. High fluoride levels (naturally occurring in some groundwater) can cause dental fluorosis — but this is completely different from treatment levels.</div>
+        <div class="fn-impact">⚠️ Anti-fluoride movements have caused several US cities to remove fluoridation, leading to documented increases in childhood tooth decay — particularly among low-income children — in those communities.</div>
+        <div class="fn-sources"><span class="fn-source-tag">CDC</span><span class="fn-source-tag">WHO</span><span class="fn-source-tag">ADA</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Government adds fluoride to water to make people obedient and controllable')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">World leaders are secretly reptilian shapeshifting aliens controlling global events</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>David Icke, 1990s · YouTube &amp; conspiracy forums · 60M+ cumulative views</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">This is a baseless conspiracy theory with zero evidentiary basis, popularised in the 1990s and revived by internet forums. It has been extensively analysed by scholars of conspiracy theories and found to be rooted in antisemitic coded language — "reptilians" often refers to Jewish people using coded dehumanising language, according to multiple academic studies of the conspiracy's origins and targets.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">World leaders are elected or appointed humans accountable to institutions, courts, and electorates. Global coordination happens through transparent institutions like the UN, G20, IMF, and WHO — all with public records. Major geopolitical conflicts between world leaders would not exist if they were secretly coordinated by a single group.</div>
+        <div class="fn-impact">⚠️ Research shows belief in reptilian conspiracies correlates with rejection of other scientific consensus and susceptibility to more dangerous conspiracy theories including health and election misinformation.</div>
+        <div class="fn-sources"><span class="fn-source-tag">Southern Poverty Law Center</span><span class="fn-source-tag">ADL</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('World leaders are secretly reptilian shapeshifting aliens controlling global events')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TECH -->
+  <div id="cat-tech" class="hidden">
+    <div class="fn-section-header">
+      <div class="fn-section-name">💻 Technology &amp; Science Misinformation</div>
+      <div class="fn-section-desc">Tech misinformation ranges from harmless myths about phone charging to dangerous denial of established science. It often exploits legitimate public concerns about corporate surveillance and government transparency to promote false narratives.</div>
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">The Earth is flat — NASA and every government are hiding the truth from humanity</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Revived online 2015+ · YouTube · 200M+ cumulative views</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Earth's spherical shape is confirmed by: satellite imagery from 60+ nations including geopolitical rivals (Russia, China, India, US), GPS systems that only work if Earth's curvature is calculated, gravity physics (all bodies above a certain mass form spheres), circumnavigation since Magellan in 1522, Earth's circular shadow on the Moon during lunar eclipses, and direct ISS observation. Eratosthenes calculated Earth's circumference within 2% accuracy using just a stick and shadows in 240 BC.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Earth is an oblate spheroid (slightly flattened at the poles due to rotation). Keeping the "flat Earth secret" would require sustained silence from every airline, GPS provider, shipping company, military, and space agency across all countries — including enemies of each other — for centuries. This is logistically impossible.</div>
+        <div class="fn-impact">⚠️ Research shows flat Earth belief clusters with vaccine denial, climate denial, and election conspiracy beliefs — suggesting a generalised distrust of institutional knowledge rather than specific evidence-based reasoning.</div>
+        <div class="fn-sources"><span class="fn-source-tag">NASA</span><span class="fn-source-tag">ESA</span><span class="fn-source-tag">ISRO</span><span class="fn-source-tag">Smithsonian</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('The Earth is flat and NASA is hiding the truth from humanity')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">NASA faked the moon landing — Stanley Kubrick filmed it in a Hollywood studio</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>USA, 1970s · YouTube · 150M+ cumulative views</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Apollo employed 400,000 engineers, scientists, and technicians. Independent tracking stations in Australia (Parkes Observatory), UK (Jodrell Bank), and the Soviet Union — which had every geopolitical reason to expose a fake — all independently tracked the missions. 382kg of Moon rocks distributed to scientists in 60+ countries have unique geological properties impossible to fabricate. Retroreflectors placed during Apollo missions are still used by amateur astronomers worldwide for lunar distance measurements today.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Six successful Apollo missions landed humans on the Moon between 1969–1972. Maintaining this "secret" would require the indefinite silence of 400,000+ people across multiple countries including Cold War adversaries. The retroreflectors left on the Moon can be independently verified by anyone with appropriate laser equipment.</div>
+        <div class="fn-impact">⚠️ Undermines public trust in science and institutions. Contributes to science denial affecting public health policy and climate action.</div>
+        <div class="fn-sources"><span class="fn-source-tag">NASA</span><span class="fn-source-tag">Parkes Observatory</span><span class="fn-source-tag">Smithsonian</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('NASA faked the moon landing Stanley Kubrick filmed it in a studio')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Facebook secretly activates your microphone to listen to your conversations for targeted ads</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Reddit/Twitter, 2016+ · 35M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Multiple independent security research teams (Northeastern University 2018, University of South Florida 2018) specifically tested this by playing audio near phones while monitoring all network traffic. None found evidence of microphone activation. Continuous audio streaming would drain batteries noticeably and generate detectable network traffic. Facebook's eerily accurate ads are explained by behavioural profiling: browsing history, location, purchase data, social connections, and third-party data brokers.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Facebook's ad targeting is based on your browsing history across millions of websites (via the Meta Pixel), location data, stated interests, social graph, purchase data, and lookalike audiences built from all of the above. This combination is so precise it appears psychic — no eavesdropping required. The very real privacy threat is data profiling, not microphone access.</div>
+        <div class="fn-impact">⚠️ While the specific claim is false, it usefully highlights the very real problem of digital surveillance through data profiling that deserves greater public awareness and regulation.</div>
+        <div class="fn-sources"><span class="fn-source-tag">Northeastern Univ.</span><span class="fn-source-tag">Wired</span><span class="fn-source-tag">FTC</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Facebook is secretly listening to your conversations through your microphone for ads')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge misleading">MISLEADING</span><span class="fn-claim">Microwave ovens destroy all nutrients in food and cause cancer</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Alternative health blogs · WhatsApp India · 22M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's misleading</div>
+        <div class="fn-why">Microwaves use non-ionising electromagnetic radiation — the same principle as oven heat, just at a different frequency. All cooking destroys some nutrients. Microwaving actually preserves more water-soluble vitamins (like Vitamin C) than boiling, because cooking times are shorter and less water is used. WHO classifies microwave cooking as safe. No credible peer-reviewed evidence links microwave-cooked food to cancer.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">A 2019 review in Nature Food found microwave cooking preserved 90%+ of antioxidants in vegetables, compared to 65% for boiling. Microwaves do not make food radioactive, do not cause cancer, and are one of the most nutrient-preserving cooking methods available. The confusion comes from misunderstanding how non-ionising radiation works.</div>
+        <div class="fn-impact">⚠️ Creates unnecessary food anxiety without health benefit. In some cases leads people to avoid convenient cooking methods without evidence-based reason.</div>
+        <div class="fn-sources"><span class="fn-source-tag">WHO</span><span class="fn-source-tag">Nature Food</span><span class="fn-source-tag">Harvard Health</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Microwave ovens destroy all nutrients in food and cause cancer')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INDIA -->
+  <div id="cat-india" class="hidden">
+    <div class="fn-section-header">
+      <div class="fn-section-name">🇮🇳 India-Specific Misinformation</div>
+      <div class="fn-section-desc">India is among the top 5 countries globally for WhatsApp-spread misinformation. With 500M+ WhatsApp users, forward chains spread at extraordinary speed. Many Indian hoaxes are deliberately crafted to trigger communal tension, political division, or financial fraud targeting vulnerable populations.</div>
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">The government is depositing Rs 15 lakh into every Indian citizen's bank account</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Misquoted political speech, 2014 · WhatsApp · 100M+ shares · Still circulating</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">This originated from a misrepresentation of a pre-election speech about black money recovery — not a citizen transfer scheme. No government notification, gazette, or approved scheme has ever promised this. The total cost of Rs 15 lakh to each of India's 1.4 billion citizens would be approximately Rs 2,100 lakh crore — greater than India's entire GDP many times over. PIB Fact Check has officially debunked this claim multiple times across multiple years.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">India has legitimate DBT schemes: PM-KISAN (Rs 6,000/year for farmers), LPG subsidies, scholarship programs. None involve Rs 15 lakh to all citizens. Any message asking you to "register" for such a scheme is a phishing attack designed to steal your Aadhaar, bank account, and UPI details. Report to cybercrime.gov.in.</div>
+        <div class="fn-impact">⚠️ Thousands of Indians defrauded after clicking fake registration links. Multiple FIRs filed across states. PIB estimates tens of crores lost to scams using this message format annually.</div>
+        <div class="fn-sources"><span class="fn-source-tag">PIB Fact Check</span><span class="fn-source-tag">BoomLive</span><span class="fn-source-tag">AltNews</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Government is depositing Rs 15 lakh in every Indian citizen bank account')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">New currency notes contain nano GPS chips so the government can track all black money</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Post-demonetisation, November 2016 · WhatsApp · 70M+ shares · Recycled every demonetisation cycle</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">GPS chips require three components: a radio receiver, a processor, and a power source (battery). The thinnest functional GPS tracker in 2024 is ~0.8mm with its own battery — physically impossible to embed in 0.1mm-thick paper currency. Currency notes cannot power active electronics. The RBI has confirmed no tracking technology is embedded in Indian currency. This claim has no basis in physics, engineering, or any official government communication.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Currency notes have security features including watermarks, security threads, colour-shifting ink, and microprinting to prevent counterfeiting — none are active tracking devices. Black money tracking uses financial monitoring (PMLA), income tax investigations, and banking transaction records — not GPS chips in paper notes.</div>
+        <div class="fn-impact">⚠️ Caused panic during the already-disruptive 2016 demonetisation. The "GPS chip in new currency" format has become a template for repeated hoaxes with each new note issue.</div>
+        <div class="fn-sources"><span class="fn-source-tag">RBI</span><span class="fn-source-tag">PIB</span><span class="fn-source-tag">BoomLive</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('New Rs 2000 notes contain nano GPS chip to track black money')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Free laptops for all students under 25 — register now through this link to claim yours</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Unknown phishing operators · WhatsApp · 50M+ shares · Resurfaces every 3–4 months</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">No central government scheme of this kind exists. This is a recurring phishing scam with slight variations. The "registration" links redirect to fake websites collecting Aadhaar numbers, bank details, UPI IDs, and phone numbers for financial fraud. Ministry of Education and PIB Fact Check have officially denied this scheme multiple times. Legitimate government schemes are announced through .gov.in domains and press releases — never through WhatsApp forward chains.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Some state governments (Tamil Nadu, Uttar Pradesh, etc.) have legitimate laptop schemes for specific categories requiring official registration through state .gov.in portals. Never click links in forwarded messages claiming government benefits. Always verify directly on official government websites or call toll-free helplines. Report suspicious links to cybercrime.gov.in.</div>
+        <div class="fn-impact">⚠️ Active phishing operation. Thousands of students have had personal and financial data stolen. Cases of UPI fraud traced to this scam pattern reported across Rajasthan, UP, and Maharashtra.</div>
+        <div class="fn-sources"><span class="fn-source-tag">PIB Fact Check</span><span class="fn-source-tag">Cyber Crime Portal</span><span class="fn-source-tag">MeitY</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Free laptops being distributed to all students under 25 by government register now')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge misleading">MISLEADING</span><span class="fn-claim">Eating beef has been made illegal across all states in India by a new central government law</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Communally targeted social media posts · Facebook &amp; WhatsApp · 30M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's misleading</div>
+        <div class="fn-why">Cattle slaughter laws in India are a state subject — each state has different laws. Kerala, West Bengal, Meghalaya, Nagaland, Mizoram, Arunachal Pradesh, and other states have no ban on beef consumption or sale. No central law banning beef eating across all of India exists. While some states have strengthened cow protection laws, a uniform nationwide beef ban is constitutionally a state matter. This claim is designed to inflame communal tensions.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Cattle slaughter is regulated differently in each state under respective state legislations. Any new legislation would be state-specific and reported by all major news outlets. For accurate current information about your specific state's laws, check the respective state government's official website or consult the state's law department.</div>
+        <div class="fn-impact">⚠️ Directly linked to mob lynching incidents across multiple Indian states. NDTV and Reuters have documented specific cases where forwarded WhatsApp messages about beef transport triggered mob violence resulting in deaths.</div>
+        <div class="fn-sources"><span class="fn-source-tag">AltNews</span><span class="fn-source-tag">BoomLive</span><span class="fn-source-tag">The Hindu</span><span class="fn-source-tag">IndiaSpend</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Eating beef has been made illegal across all states in India by central law')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Jio SIM cards contain special chips that monitor and record all your conversations for the government</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Competitor-motivated disinfo · WhatsApp · 45M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">All telecom operators in India are subject to the same lawful interception provisions under the Indian Telegraph Act — this applies equally to Airtel, Vi, BSNL, and Jio. No operator has a "special surveillance chip" unique to their SIM. Jio SIM cards use the same UICC (Universal Integrated Circuit Card) technology as all other operators. This claim specifically targets one company without any technical or regulatory basis.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Lawful interception by Indian authorities requires a court order or government authorisation under established legal frameworks. This applies to all operators equally. If privacy is a concern, encrypted communication apps (with end-to-end encryption) provide stronger protection regardless of which carrier you use.</div>
+        <div class="fn-impact">⚠️ Created significant consumer anxiety and was used as a competitive disinformation tool. Demonstrates how corporate misinformation can be spread through consumer channels.</div>
+        <div class="fn-sources"><span class="fn-source-tag">TRAI</span><span class="fn-source-tag">BoomLive</span><span class="fn-source-tag">AltNews</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Jio SIM cards contain chips that monitor and record all your conversations')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CLIMATE -->
+  <div id="cat-climate" class="hidden">
+    <div class="fn-section-header">
+      <div class="fn-section-name">🌍 Climate &amp; Environment Misinformation</div>
+      <div class="fn-section-desc">Climate misinformation has been heavily funded by fossil fuel interests since the 1970s and has successfully delayed global climate action by decades. Internal Exxon documents released in 2023 showed the company accurately predicted climate change — then funded denial campaigns anyway.</div>
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Climate change is a hoax invented by scientists to secure more research grant funding</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Fossil fuel industry PR, 1990s · Facebook &amp; conservative media · Ongoing</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">97%+ of actively publishing climate scientists agree human-caused climate change is real (NASA, 2023). This consensus exists across scientists in 197 countries — including those funded by governments with no interest in climate regulations. Surface temperatures have risen 1.1°C since pre-industrial times, documented by NASA, NOAA, UK Met Office, and independent researchers using completely different datasets that all reach the same conclusion. Internal Exxon documents showed the company knew this in the 1970s and chose to fund denial.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Climate change is the most rigorously studied scientific topic in history. The IPCC synthesises thousands of studies from independent global research groups. Evidence includes satellite temperature data, ocean heat content measurements, sea level rise, ice core records extending 800,000 years, coral bleaching, glacier recession documented in every mountain range on Earth, and shifting species migration patterns.</div>
+        <div class="fn-impact">⚠️ Climate denial delayed meaningful policy action by 30+ years. In 2023 alone, climate-related disasters caused $1.7 trillion in economic damage globally. Future costs are estimated at $23 trillion by 2100 under current trajectories.</div>
+        <div class="fn-sources"><span class="fn-source-tag">NASA</span><span class="fn-source-tag">IPCC</span><span class="fn-source-tag">NOAA</span><span class="fn-source-tag">Nature</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Climate change is a hoax invented by scientists to get more research funding')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge misleading">MISLEADING</span><span class="fn-claim">Electric vehicles are worse for the environment than petrol cars because of toxic battery mining</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Oil industry talking points · Twitter &amp; LinkedIn · 15M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's misleading</div>
+        <div class="fn-why">While lithium battery mining has genuine environmental impacts, lifecycle analysis consistently shows EVs produce 50–70% less total CO2 than petrol cars in most countries, even accounting for manufacturing (Nature Sustainability, 2023). EVs have higher manufacturing emissions but recover that within 1–3 years of driving depending on the electricity grid. As grids get cleaner, this advantage grows. Battery recycling technology is also rapidly improving. The claim ignores the ongoing extraction and refining required for petrol.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">In countries with clean electricity (France, Norway, hydro-heavy regions), EVs produce 80%+ less lifetime emissions. Even in coal-heavy grids, EVs still outperform petrol vehicles over their lifetime. Mining impacts are real and should be addressed through better regulation and recycling — but they do not make EVs worse than petrol overall. This talking point is primarily used to stall EV transition policies.</div>
+        <div class="fn-impact">⚠️ Used to successfully stall EV adoption policies in multiple countries, delaying transition away from fossil fuels by an estimated 3–5 years in several major economies.</div>
+        <div class="fn-sources"><span class="fn-source-tag">Nature Sustainability</span><span class="fn-source-tag">Transport &amp; Environment</span><span class="fn-source-tag">IEA</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Electric vehicles are worse for the environment than petrol cars because of battery mining')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Chemtrails from aeroplanes are chemical or biological agents being sprayed on the population by governments</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>USA, 1990s · YouTube · 80M+ cumulative views globally</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">Aircraft contrails (condensation trails) form when hot humid exhaust from jet engines meets cold air at altitude — the same process as your breath fogging on a cold day. Contrail persistence depends on atmospheric humidity. A 2016 survey of 77 atmospheric scientists found 77 of 77 identified the claimed "evidence" as normal contrails. Making this conspiracy real would require the simultaneous complicity of all airlines, airports, aircraft engineers, fuel suppliers, and meteorologists worldwide — across countries that are active enemies of each other.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Contrails consist of water ice crystals from engine exhaust. Duration and spread depend on relative humidity at altitude: in humid air they persist and spread; in dry air they dissipate quickly. This variability — what conspiracy theorists point to as "evidence" — is simple atmospheric physics. Real geoengineering research (stratospheric aerosol injection) is conducted openly and published in academic journals.</div>
+        <div class="fn-impact">⚠️ Has led to harassment of airline and meteorology personnel. Contributes to distrust of aviation and atmospheric science. Related beliefs correlate with rejection of other scientific consensus.</div>
+        <div class="fn-sources"><span class="fn-source-tag">Environmental Research Letters</span><span class="fn-source-tag">NOAA</span><span class="fn-source-tag">UK Met Office</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Chemtrails from aeroplanes are chemical agents being sprayed on population by governments')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FINANCE -->
+  <div id="cat-finance" class="hidden">
+    <div class="fn-section-header">
+      <div class="fn-section-name">💰 Finance &amp; Economy Misinformation</div>
+      <div class="fn-section-desc">Financial misinformation causes direct, measurable economic harm to individuals. It ranges from Ponzi scheme promotion dressed as investment advice to fake government scheme fraud targeting elderly and low-income populations across India.</div>
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">Bitcoin will reach $1 million by end of this year — a guaranteed investment opportunity you must not miss</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Crypto influencers · Telegram &amp; Twitter · Recurring every market cycle</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">No investment return is "guaranteed" — this is definitionally false for any asset in a market economy. Bitcoin price predictions have been spectacularly wrong: dozens of analysts predicted $100k by end of 2021 (it peaked at ~$69k then crashed to $16k). Crypto markets are extraordinarily volatile and susceptible to whale manipulation. "Guaranteed" return claims are the primary hallmark of Ponzi schemes and financial fraud under securities law in every jurisdiction.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Bitcoin is a speculative asset with no intrinsic value guarantee — its price is driven purely by supply and demand. Anyone promoting guaranteed returns on cryptocurrency is committing financial fraud or is themselves being defrauded. SEBI, RBI, and financial regulators worldwide specifically warn against guaranteed crypto return claims. If it sounds too good to be true, it always is.</div>
+        <div class="fn-impact">⚠️ Indians lost over Rs 1,000 crore to cryptocurrency scams in 2022–23 alone (CID data). Many victims were lured specifically by "guaranteed returns" messaging on WhatsApp and Telegram groups.</div>
+        <div class="fn-sources"><span class="fn-source-tag">SEBI</span><span class="fn-source-tag">RBI</span><span class="fn-source-tag">Reuters</span><span class="fn-source-tag">CID India</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('Bitcoin will reach $1 million this year guaranteed investment opportunity')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge debunked">DEBUNKED</span><span class="fn-claim">A special RBI scheme offers 40% annual returns on fixed deposits — apply through this WhatsApp link</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Financial fraud operators · WhatsApp · Recurring scam targeting senior citizens</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's false</div>
+        <div class="fn-why">The RBI's current repo rate is ~6.5%, and the highest legitimate FD rates from nationalised banks are ~7.5%. A 40% annual return is physically impossible in any legitimate banking scheme — it would exceed the total interest income of entire bank portfolios. The RBI never announces schemes through WhatsApp forwards and never asks for applications through third-party links. No legitimate financial institution announces new products exclusively through forwarded messages.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">Legitimate RBI announcements appear on rbi.org.in, national newspapers, and government media. Any scheme promising returns significantly above market rates (currently 7–8% for FDs) either involves undisclosed high risk or is fraudulent. The RBI Ombudsman (14448) handles complaints about investment fraud. Always verify financial schemes by calling your bank directly using numbers from their official website.</div>
+        <div class="fn-impact">⚠️ The RBI received 4,100+ complaints about investment fraud in 2022–23. Senior citizens are disproportionately targeted. Many lose life savings.</div>
+        <div class="fn-sources"><span class="fn-source-tag">RBI</span><span class="fn-source-tag">PIB</span><span class="fn-source-tag">Cyber Crime Portal</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('RBI special scheme gives 40% annual returns on fixed deposits apply now')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-card-top"><span class="fn-badge misleading">MISLEADING</span><span class="fn-claim">India's economy is secretly collapsing and the government is hiding the true GDP numbers from the public</span></div>
+        <div class="fn-origin"><span class="fn-origin-dot"></span>Opposition political accounts · Twitter · 12M+ shares</div>
+        <div class="fn-divider"></div>
+        <div class="fn-label">Why it's misleading</div>
+        <div class="fn-why">India's GDP data is compiled by the National Statistical Office (NSO) and cross-verified by the World Bank, IMF, and Asian Development Bank — independent international bodies with no political stake in India's figures. India became the world's 5th largest economy (surpassing the UK) in 2022, verified by multiple international sources. While legitimate debates exist among economists about India's GDP methodology, the "secret collapse being hidden" claim is a political assertion without credible evidentiary basis.</div>
+        <div class="fn-label">The truth</div>
+        <div class="fn-truth">India's economy faces genuine and serious challenges: unemployment, rural distress, income inequality, and an informal sector that is hard to measure accurately. These deserve rigorous policy debate. However, a "secret collapse" narrative needs specific evidence from credible sources — not anonymous claims. The IMF's World Economic Outlook data is publicly available and shows India as one of the world's fastest-growing major economies.</div>
+        <div class="fn-impact">⚠️ Creates unnecessary economic anxiety that can affect consumer confidence, investment decisions, and currency exchange rates when widely believed and acted upon.</div>
+        <div class="fn-sources"><span class="fn-source-tag">IMF</span><span class="fn-source-tag">World Bank</span><span class="fn-source-tag">NSO India</span><span class="fn-source-tag">ADB</span></div>
+        <div class="fn-cta"><button class="fn-btn" onclick="analyzeAndRedirect('India economy is secretly collapsing and government hiding true GDP numbers')">⟳ Run AI Analysis on this claim</button></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showCat(cat, btn) {
+  document.querySelectorAll('.fn-tab').forEach(t => t.classList.remove('active'));
+  ['health','politics','tech','india','climate','finance'].forEach(c => {
+    const el = document.getElementById('cat-' + c);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById('cat-' + cat);
+  if (target) target.classList.remove('hidden');
+  if (btn) btn.classList.add('active');
+}
+
+function analyzeAndRedirect(claim) {
+  sessionStorage.setItem('pendingClaim', claim);
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
